@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML</title>
+    <style>
+        .container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        img {
+            margin-right: 10px; 
+            margin-left: 10px;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+        .colonna {
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            font-family: default;
+            text-align: justify;
+            margin-top: 5%;
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-bottom: 5%;
+        }
+        details {
+            padding: 0.5em 0.5em 0;
+        }
+        .details-border {
+            border: 1px solid #aaa;
+            border-radius: 4px;
+        }
+        summary {
+            margin: -0.5em -0.5em 0;
+            padding: 0.5em;
+        }
+        details[open] {
+            padding: 0.5em;
+            border-bottom: 1px solid #aaa;
+        }
+        details[open] summary {
+            border-bottom: 1px solid #aaa;
+            margin-bottom: 0.5em;
+        }
+        /*.ombra {
+            box-shadow: 0.5px 0.5px 2px black;
+        }*/
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 36px;">Le basi dell'HTML</h1>
+    <div class="container" style="margin-bottom: 20px;">
+        <div class="colonna">
+            <img src="./img/1_HTML5.png" alt="logo HTML5" width="100px" height="auto">
+        </div>
+        <div class="colonna">
+            <p>
+                L'<abbr title="HyperText Markup Language">HTML</abbr>, sviluppato nel 1991 da Tim Berners-Lee, è il linguaggio di markup più usato per la realizzazione di pagine web. Un file HTML utilizza dei <b>tag</b> (marcatori) per dire al browser come è strutturato; al loro interno vi sono gli <b>elementi</b> da mostrare, che possono anche essere ulteriori tag annidati. Il codice HTML viene quindi interpretato per generare la pagina visualizzabile dall'utente.
+            </p>
+            <details style="background-color: lightgray; padding: 10px; border-radius: 5px;" class="details-border">
+                <summary style="cursor: pointer; font-weight: bold;">Testi e siti di riferimento</summary>
+                <div class="container">
+                    <img src="https://m.media-amazon.com/images/I/61HorcFwL5L.jpg" alt="copertina libro HTML5" width="40px" height="auto">
+                    <p style="font-size: 0.75rem;"><a href="https://amzn.eu/d/7e6HZ2H"><i>The Definitive Guide to HTML5</i></a> - Adam Freeman</p>
+                </div>
+                <div class="container">
+                    <img src="https://m.media-amazon.com/images/I/91xorHXzWbL._SL1500_.jpg" alt="copertina libro Javascript" width="40px" height="auto">
+                    <p style="font-size: 0.75rem;"><a href="https://amzn.eu/d/cbg9eA1"><i>Javascript - The Definitive Guide 6th Edition</a></i> - David Flanagan</p>
+                </div>
+                <div class="container">
+                    <img src="https://learningwebdesign.com/images/lwd5_cover.png" alt="copertina libro Learning Web Design" width="40px" height="auto">
+                    <p style="font-size: 0.75rem;"><a href="https://learningwebdesign.com/"><i>Learning Web Design - A Beginner's Guide to HTML, CSS, JavaScript, and Web Graphics</i></a></p>
+                </div>
+                <div class="container">
+                    <img src="https://m.media-amazon.com/images/I/91oLbKMEadL._SL1500_.jpg" alt="copertina libro quattro (quello gratis)" width="40px" height="auto">
+                    <p style="font-size: 0.75rem;"><a href="https://womengovtcollegevisakha.ac.in/departments/Learning%20PHP,%20MySQL,%20JavaScript,%20CSS%20&%20HTML5_%20A%20Step-by-Step%20Guide%20to%20Creating%20Dynamic%20Websites%20(%20PDFDrive%20).pdf"><i>Learning PHP, MySQL, JavaScript, CSS & HTML5</i></a> - Robin Nixon</p>
+                </div>
+                <div class="container">
+                    <img src="https://m.media-amazon.com/images/I/81FkghfrfXL._SL1500_.jpg" alt="copertina libro cinque" width="40px" height="auto">
+                    <p style="font-size: 0.75rem;"><a href="https://amzn.eu/d/adcmSWw"><i>Full-Stack Web Development with Vue.js and Node</i></a> - Aneeta Sharma</p>
+                </div>
+                <p>
+                    HTML CSS:
+                    <ul>
+                    <li><a href="https://www.w3schools.com/html/default.asp">w3schools</a></li>
+                    <li>https://developer.mozilla.org/en-US/docs/Learn/HTML</li>
+                    <li>https://www.w3schools.com/css/default.asp</li>
+                    <li>https://www.w3.org/standards/techs/html#w3c_all</li>
+                    </ul>
+                    Javascript
+                    <ul>
+                    <li><a href="https://www.w3schools.com/js/default.asp">w3schools</a></li>
+                    <li><a href="https://javascript.info/">javascript.info</a></li>
+                    </ul>
+                    MongoDB
+                    <ul>
+                    <li>https://www.javatpoint.com/mongodb-tutorial</li>
+                    Node JS
+                    <li>https://nodejs.org/en/docs/guides/</li>
+                    </ul>
+                </p>
+            </details>
+        </div>
+    </div>
+    <details>
+        <summary style="font-size: 20px;">Cosa c'è dietro una pagina web?</summary>
+        <p>Quando si digita un <abbr title ="Uniform Resource Locator">URL</abbr> si attivano una serie di processi che permetto di visualizzare la pagina desiderata.</p>
+        <img src=".\img\2_URL.png" alt="URL" width="50%" height=auto>
+        <p>
+            L'Internet è una serie di dispositivi elettronici interconnessi attraverso un indirizzo <abbr title="Internet Protocol">IP</abbr> univoco per ogni dispositivo connesso alla rete. Solo chi è connesso è in grado di condividere informazioni e uno dei modi in cui è possibile farlo è attraverso il <abbr title="World Wide Web">WWW</abbr>, un insieme di pagine web e documenti collegati fra loro attraverso collegamenti ipertestuali (link).
+        </p>
+        <p>
+            Il '<b>web</b>' è uno dei servizi che utilizzano che utilizzano l'infrastruttura internet, altri servizi includono email e messaggistica istantanea.    
+        </p>
+        <p>
+            <u>Per navigare nel WWW</u>, gli utenti utilizzano un browser web (come Chrome, Firefox, Safari), che agisce da <b>client</b> web, ovvero un software che invia richieste ai <b>server</b> web (come Apache o nginx) e interpreta i linguaggi web, visualizzando le pagine ricevute.
+        </p>
+        <img src=".\img\3_client-server.png" alt="Interazione client-server" width="70%" height=auto>
+        
+        <p>
+            Il protocollo di comunicazione principale per scambiare documenti è <abbr title="HyperText Transfer Protocol">HTTP</abbr> o <abbr title="versione sicura di HTTP con crittografia SSL/TLS">HTTPS</abbr>; definiscono come devono essere formattati e trasmessi i messaggi.
+        </p>
+        <p>
+            Il <abb title="Domain Name System">DNS</abbr> traduce i nomi di dominio (es. <code>www.google.com</code>) in indirizzi IP numerici, necessari per identificare univocamente i server su Internet (possiamo considerla come una rubrica). <u>Quando un utente inserisce un URL nel browser</u>, il browser contatta un server DNS per ottenere l'indirizzo IP corrispondente. Questo processo, chiamato <b>risoluzione DNS</b>, permette di connettersi al sito richiesto senza dover memorizzare indirizzi numerici complessi. Se l'indirizzo IP è già stato memorizzato nella cache locale, il browser lo utilizza direttamente, accelerando il caricamento della pagina.
+        </p>
+        <p>
+            <dt><b>Origini di Internet</b>:</dt>
+            <dd>
+                Ripercorrendo la storia di Internet, l'idea nacque negli Stati Uniti, anni Cinquata, durante la Guerra Fredda, quando si resero conto che sarebbe stato comodo avere un sistema di comunicazione che non potesse essere colpito da un attacco nucleare sovietico.<br>
+                Nel 1958, il presidente Eisenhower istituì la <abbr title="Defense Advanced Research Projects Agency">DARPA</abbr>, con l'obiettivo di sviluppare una rete di computer decentralizzata chiamata <b>ARPANET</b>. Nel 1969, Leonard Kleinrock riuscì a inviare il primo messaggio tra due computer situati presso l'Università della California (UCLA) e l'Università di Stanford, segnando l'inizio della comunicazione tra computer distanti.
+            </dd>
+            <dt><b>Sviluppo dei protocolli</b>:</dt>
+            <dd>
+                Nel 1974, gli informatici Bob Kahn e Vint Cerf introdussero il <b>protocollo TCP/IP</b>, che suddivide i dati in pacchetti per una trasmissione efficiente e sicura, diventando la base della comunicazione su Internet.
+            </dd>
+            <dt><b>Nascita del World Wide Web</b>:</dt>
+            <dd>
+                Nel 1991, al CERN di Ginevra, Tim Berners-Lee sviluppò il <b>World Wide Web</b>, introducendo strumenti fondamentali come <b>HTML</b>, <b>HTTP</b> e gli <b>URL</b>. Il 6 agosto 1991, il CERN pubblicò il primo sito web della storia, rendendo accessibili informazioni a livello globale.
+            </dd>
+            <dt><b>Diffusione in Italia</b>:</dt>
+            <dd>
+                Il 30 aprile 1986, l'Italia si collegò per la prima volta ad ARPANET, segnando l'inizio dell'era di Internet nel paese.
+            </dd>
+        </p>
+    </details>
+    <h2>Struttura di documenti HTML</h2>
+    <p>
+        Come standard, si nomina <code>index.html</code> la pagina principale di ogni sito perché i server web lo cercano automaticamente nella cartella principale, permettendo agli utenti di accedere al sito senza dover digitare il <abbr title="(es. https://www.miosito.com/ invece di https://www.miosito.com/index.html)">nome del file</abbr>. Questo rende quindi gli URL più puliti e migliora l'esperienza utente.
+    </p>
+    <p>
+        Google ha introdotto delle best practices per la scrittura di file HTML5, mirate a promuovere un codice pulito, ben strutturato e semanticamente corretto.
+        <ul>
+            <!--1--><li><code style="font-size: 16px;">&lt;!DOCTYPE&gt;</code>: ogni file HTML inizia con questa dichiarazione, che indica al browser la versione dell'HTML da utilizzare. Questa dichiarazione è fondamentale affinchè il documento venga interpretato correttamente.</li>
+            <!--2--><li><code style="font-size: 16px;">&lt;html lang="it"&gt;</code>: tag che rappresenterà la radice della nostra pagina. L'attributo <code>lang</code> specifica la lingua del documento, per miglirare l'accessibilità.</li>
+            <!--3--><li><code style="font-size: 16px;">&lt;head&gt;</code>: fornisce info sul documento e deve contenere almeno <code>&lt;meta charset="UTF-8"&gt;</code>, che definisce la codifica dei caratteri e con <code>UTF-8</code> si supportano anche simboli e lettere accentate.</li>
+            <li><code style="font-size: 16px;">&lt;body&gt;</code>: contiene il contenuto visibile.</li>
+        </ul>
+        <p>
+            TODO ChatGPT<br>
+            <body> - Contenuto principale
+                <header> → Contiene elementi introduttivi come il logo e il menu di navigazione.
+                <nav> → Insieme di collegamenti per la navigazione del sito.
+                <main> → Contenuto principale della pagina (usato per migliorare accessibilità e SEO).
+                <section> → Raggruppa contenuti correlati all'interno della pagina.
+                <article> → Contenuto indipendente, come un post di blog o un articolo di giornale.
+                <footer> → Include informazioni di chiusura, come copyright o link ai social.
+            📌 Perché seguire lo standard di Google?
+            ✔ Migliora il SEO → L’uso corretto dei tag semantici aiuta i motori di ricerca a interpretare il contenuto.
+            ✔ Ottimizza la performance → Il caricamento asincrono di JavaScript (defer) e la gestione del viewport migliorano la velocità.
+            ✔ Accessibilità migliorata → I tag semantici (<main>, <nav>, <header>) aiutano gli screen reader e utenti con disabilità.
+            ✔ Manutenibilità → Un codice più pulito e ben organizzato facilita le modifiche future.
+            
+            Se vuoi approfondire un aspetto specifico, dimmelo! 🚀
+        </p>
+        <details>
+            <summary>Dunque, ecco un esempio di pagina conforme agli standard di Google.</summary>
+            <!DOCTYPE html>
+            <html lang="it">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Titolo della pagina</title>
+                <link rel="stylesheet" href="styles.css">
+                <script defer src="script.js"></script>
+            </head>
+            <body>
+                <header>
+                    <h1>Intestazione principale</h1>
+                    <nav>
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Chi siamo</a></li>
+                            <li><a href="#">Contatti</a></li>
+                        </ul>
+                    </nav>
+                </header>
+                <main>
+                    <section>
+                        <h2>Sottotitolo</h2>
+                        <p>Testo del contenuto.</p>
+                    </section>
+                    <article>
+                        <h2>Articolo</h2>
+                        <p>Testo dell’articolo.</p>
+                    </article>
+                </main>
+                <footer>
+                    <p>&copy; 2025 Nome Sito</p>
+                </footer>
+            </body>
+            </html>
+        </details>
+    </p>
+    <p>
+        <details>
+        <summary>I tag importanti sono:</summary><ul>
+        <li>(<code>&lt;HTML&gt;&lt;/HTML&gt;</code>): container per tutti gli altri elementi e definisce la radice dell'albero del documento.</li>
+        <li>(<code>&lt;HEAD&gt;&lt;/HEAD&gt;</code>): container per metadata.</li>
+        <li>(<code>&lt;TITLE&gt;&lt;/TITLE&gt;</code>): definisce il titolo (solo testo) per un documento ed è visibile nel titolo del browser o nella page's tab.</li>>
+        <li>(<code>&lt;BODY&gt;&lt;/BODY&gt;</code>): contiene il contenuto visibile della pagina, .</li>
+        <li>HEADING (<code>&lt;H1&gt;</code> to <code>&lt;H6&gt;</code>).</li>
+        <li>LINE BREAK (<code>&lt;br&gt;</code>): aggiunge una linea di spazio fra un paragrafo e l'altro.</li>
+        <li>(<code>&lt;center&gt;&lt;/center&gt;</code>).</li></ul>
+        </details>
+    </p>
+    <p>
+        Ogni tag può avere <b>attributi</b>, che forniscono informazioni aggiuntive sugli elementi. Gli attributi sono definiti nei tag di apertura e seguono la sintassi <code>chiave="valore"</code>. Se il valore contiene gli apici doppi si usano i singoli, e viceversa.
+        <details>
+            <summary><code>class</code>: ...</summary>
+            <p>...</p>
+        </details>
+        <details>
+            <summary><code>id</code>: ...</summary>
+            <p>...</p>
+        </details>
+        <details>
+            <summary><code>title</code>: specifica informazioni extra sull'argomento.</summary>
+            <p><pre><code>&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;</code></pre></p>
+        </details>
+        <p>lang</p>
+    </p>
+    <p style="font-size: 24px;">
+        Chiedere a ChatGPT come migliorerebbe questa pagina e perché farebbe queste modifiche seguendo lo standard dettato da Google.<br>
+        Ricontrollare le estensioni di vscode e riscriverle su Notion.<br>
+        Su ChatGPT ho esplorato come mettere la modalità notte e impedire la copia-screen del testo sulla mia pagina. Dovrò esplorare meglio l'argomento.
+    </p>
+    <!-- Questo è un commento in HTML -->
+    <h2>CSS</h2>
+    <div class="container" style="margin-bottom: 20px;">
+        <div class="colonna">
+            <img src=".\img\4_CSS3.png" height="auto" alt="logo CSS3" width="90px">
+        </div>
+        <div class="colonna">
+            <p>
+                È un linguaggio di styiling che consente di modificare l'aspetto e la formattazione della pagina web.
+            </p>
+            <code style="text-align: left; margin-left: 0%">
+                <!-- TODO -->
+                    <pre>
+                        p { /* Selettore di elemento */
+                            font-size: 16px;
+                        }
+                        .intro { /* Selettore di classe */
+                            font-weight: bold;
+                        }
+                        #header { /* Selettore di ID */
+                            background-color: #eee;
+                        }
+                </pre>
+            </code> 
+        </div>
+    </div>
+    <p>
+        <details>
+            <summary>LA FELCIITà</summary>
+            ALbano
+        </details>
+    </p>
+</body>
+</html>
