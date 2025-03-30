@@ -1,3 +1,4 @@
+In questa repository condivido le conoscenze apprese su HTML, CSS e Javascript durante il corso universitario del prof. Loreti durante la Laurea Triennale in Informatica dell'Università di Roma "Tor Vergata".
 
 ________
 
