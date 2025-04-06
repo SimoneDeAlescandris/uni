@@ -1,4 +1,5 @@
-### Indice
+# Indice
+
 - [Introduzione](#introduzione)
 - [Formattazione](#formattazione)
   - [*Italic*](#italic)
@@ -22,17 +23,17 @@
   - [Callout](#callout)
   - [Front Matter](#front-matter)
   - [Embed di Video](#embed-di-video)
-- [Bibliografia](#bibliografia)
+- [Bibliografia](#bibliografia)<br><br>
 
-## **Introduzione**
+# **Introduzione**
 
 Markdown è uno dei linguaggi di markup più utilizzati per aggiungere elementi formattati in documenti di testo, creato nel 2004 da John Gruber.  
 A differenza degli editor [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG), come Microsoft Word, Markdown è più versatile e viene utilizzato per scopi diversi, come la creazione di pagine web (Astro, Jamstack), documenti, note (Obsidian), libri, presentazioni, email e documenti tecnici; persino ChatGPT lo utilizza per formattare le sue risposte. 
 
 L'estensione di questi tipi di file è ".md" o ".markdown".<br>
-Markdown fornisce una sintassi più semplice rispetto all'HTML, pur venendo tradotto in HTML durante la visualizzazione. Nulla vieta di usare un mix fra i due linguaggi **SE** il render di Markdown supporta HTML.
+Markdown fornisce una sintassi più semplice rispetto all'HTML, pur venendo tradotto in HTML durante la visualizzazione. Nulla vieta di usare un mix fra i due linguaggi **SE** il render di Markdown supporta HTML.<br><br>
 
-## **Formattazione**
+# **Formattazione**
 
 - *<span id="italic">Italic</span>*: per rendere in corsivo una frase si circonda le sue parole con un underscore (`_`) o un asterisco. Es.: `_this_` o `*that*`.
 - **<span id="bold">Bold</span>**: similmente il grassetto lo si ottiene circondando la parola con due asteristichi. Oppure usando due underscore, scelta meno comune. Es.: `**this**` o `__that__`.  
@@ -241,9 +242,9 @@ Markdown fornisce una sintassi più semplice rispetto all'HTML, pur venendo trad
 > | [***`Esempio`***](about:blank "Lautaro Martinez") | Colonna 2 |
 > |:--------------------------------------------------|----------:|
 > |  Valore 1                                         | Valore 2  |
-</details>
+</details><br><br>
 
-## Bibliografia:
+# Bibliografia:
 
 - [Edoardo Midali](https://youtu.be/jz0WfxLXth8?si=ACuzopn3DP8t9ilb);
 - [Markdown Guide](https://www.markdownguide.org/getting-started/);
