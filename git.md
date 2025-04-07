@@ -114,10 +114,6 @@ Aprendo l’applicazione tra le prime cose che dobbiamo fare è spostarci nella 
   ?? LICENSE.txt				# ?? : file non tracciato
   ```
 
----
----
----
-
 - **`git commit`**: salva uno snapshot permanente dei file che si trovano *nell'area di stage* nel repository locale. Non registra automaticamente *tutti* i cambiamenti, ma solo quelli che sono stati aggiunti all'area di stage attraverso `git add`. Eventuali modifiche apportate dopo tale comando non saranno incluse nel commit finché non verranno registrate con `git add`.
   
   ```powershell
@@ -131,6 +127,9 @@ Aprendo l’applicazione tra le prime cose che dobbiamo fare è spostarci nella 
     - `git commit -a -m "Messaggio"`: aggiunge automaticamente *tutti* i file tracciati modificati e poi committa (equivalente a `git add` + `git commit`).
     - `git commit --amend`: modifica l'ultimo commit, utile per correggere il messaggio o aggiungere altri file dimenticati.
 
+---
+---
+---
 ---
 
 - **`git log`**: mostra la cronologia di tutti i commit effettuati, in ordine dal più recente al più vecchio, in modo da poter visionare quali modifiche sono state fatte, da chi, e con quale messaggio (oppure per recuperare l'ID di un commit).
