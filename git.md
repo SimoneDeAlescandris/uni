@@ -1,6 +1,13 @@
 # Indice
-
-- <!-- TODO -->
+- [init](#init)
+- [add](#add)
+- [status](#status)
+- [commit](#commit)
+- [log](#log)
+- [clone](#clone)
+- [tag](#tag)
+- [show](#show)
+<!-- TODO -->
   - [Notion](#notion)
 - [Bibliografia](#bibliografia)<br><br>
 
@@ -79,443 +86,117 @@ Aprendo l’applicazione tra le prime cose che dobbiamo fare è spostarci nella 
 
 ### Tra i comandi più utili abbiamo:
 
-- **`$ git init`**: comando iniziale per avviare il monitoraggio di un progetto con Git. Deve essere eseguito nella directory del progetto e crea una nuova subdirectory denominata `.git`, contenente tutti i file necessari per il repository. Con questo solo comando preliminare non viene ancora tracciato alcun file.
-
+- **<span id="init" style="font-size: 16px;">`$ git init`</span>**: comando iniziale per avviare il monitoraggio di un progetto con Git. Deve essere eseguito nella directory del progetto e crea una nuova subdirectory denominata `.git`, contenente tutti i file necessari per il repository. Con questo solo comando preliminare non viene ancora tracciato alcun file.
   ```powershell
-  $ git init
+  git init
   ```
 
-- **`$ git add`**: per iniziare a tracciare i file. Può essere utilizzato in diversi modi:
-
+- **<span id="add" style="font-size: 16px;">`$ git add`</span>**: per iniziare a tracciare i file. Può essere utilizzato in diversi modi:
   ```powershell
-  $ git add README.py   # Aggiunge un singolo file specificato all'area di stage
-  $ git add .           # Aggiunge tutti i file nella directory corrente e nelle subdirectory
-  $ git add *.txt       # Aggiunge tutti i file con estensione .txt (o qualche essa sia) nella directory corrente
+  git add README.py   # Aggiunge un singolo file specificato all'area di stage
+  git add .           # Aggiunge tutti i file nella directory corrente e nelle subdirectory
+  git add *.txt       # Aggiunge tutti i file con estensione .txt (o qualche essa sia) nella directory corrente
   ```
 
-- **`$ git status`**: mostra informazioni dettagliate sullo stato dei file nel repository e determina quali file sono modificati, tracciati o non tracciati.
-
+- **<span id="status" style="font-size: 16px;">`$ git status`</span>**: mostra informazioni dettagliate sullo stato dei file nel repository e determina quali file sono modificati, tracciati o non tracciati.
   ```powershell
-  $ git status
-	
+  git status
   # Per una visualizzazione più sintetica si possono usare:
-
-  $ git status -s
+  git status -s
   # oppure
-  $ git status --short
+  git status --short
   ```
-
   Esempio di output:
-  ```powershell
-  M README.py						# M	 : file modificato, ma non ancora aggiunto all'area di stage
-  MM Rakefile						# MM : file modificato, messo in stage e poi ulteriormente modificato.
-  A  lib/git.rb					# A	 : file, nuovo, aggiunto all'area di stage
-  M  lib/simplegit.rb		# file modificato ed è già in area di stage.
-  ?? LICENSE.txt				# ?? : file non tracciato
-  ```
+		```powershell
+		M README.py						# M	 : file modificato, ma non ancora aggiunto all'area di stage
+		MM Rakefile						# MM : file modificato, messo in stage e poi ulteriormente modificato.
+		A  lib/git.rb					# A	 : file, nuovo, aggiunto all'area di stage
+		M  lib/simplegit.rb		# file modificato ed è già in area di stage.
+		?? LICENSE.txt				# ?? : file non tracciato
+		```
 
-- **`git commit`**: salva uno snapshot permanente dei file che si trovano *nell'area di stage* nel repository locale. Non registra automaticamente *tutti* i cambiamenti, ma solo quelli che sono stati aggiunti all'area di stage attraverso `git add`. Eventuali modifiche apportate dopo tale comando non saranno incluse nel commit finché non verranno registrate con `git add`.
-  
+- **<span id="commit" style="font-size: 16px;">`git commit`</span>**: salva uno snapshot permanente dei file che si trovano *nell'area di stage* nel repository locale. Non registra automaticamente *tutti* i cambiamenti, ma solo quelli che sono stati aggiunti all'area di stage attraverso `git add`. Eventuali modifiche apportate dopo tale comando non saranno incluse nel commit finché non verranno registrate con `git add`.
   ```powershell
 	git commit -m "Titolo: Ciao" -m "Descrizione: Messaggio descrittivo"
-	```
-  
-	L'opzione `-m`, non necessaria, permette di scrivere direttamente un messaggio di fianco ad ogni commit per avere un nostro report sulle informazioni che avevamo quando lo avevamo creato.  
+	git commit -a -m "Messaggio" 	# Aggiunge automaticamente tutti i file tracciati modificati e poi committa (equivalente a `git add` + `git commit`)
+    - git commit --amend 			# Modifica l'ultimo commit, utile per correggere il messaggio o aggiungere altri file dimenticati.
+	``` 
+	L'opzione `-m`, non necessaria, permette di scrivere direttamente un messaggio di fianco ad ogni commit per avere un nostro report sulle informazioni che avevamo quando lo avevamo creato.
 
-	#### TODO
-  - **Altre opzioni utili**:
-    - `git commit -a -m "Messaggio"`: aggiunge automaticamente *tutti* i file tracciati modificati e poi committa (equivalente a `git add` + `git commit`).
-    - `git commit --amend`: modifica l'ultimo commit, utile per correggere il messaggio o aggiungere altri file dimenticati.
-
----
----
----
----
-
-- **`git log`**: mostra la cronologia di tutti i commit effettuati, in ordine dal più recente al più vecchio, in modo da poter visionare quali modifiche sono state fatte, da chi, e con quale messaggio (oppure per recuperare l'ID di un commit).
-	
+- **<span id="log" style="font-size: 16px;">`git log`</span>**: mostra la cronologia di tutti i commit effettuati, in ordine dal più recente al più vecchio, in modo da poter visionare quali modifiche sono state fatte, da chi, e con quale messaggio (oppure per recuperare l'ID di un commit). Essendo solo un comando di lettura, non modifica nulla ed è quindi sicuro eseguirlo tutte le volte che vogliamo.
 	```powershell
   git log
+	git log -n										# Mostra gli ultimi n commit.
+	git log --oneline  								# Mostra ogni commit su una singola riga, molto più compatto.
+  git log --graph --oneline 						# Aggiunge anche un piccolo grafico ad albero, utile per visualizzare i rami.
+  git log -p 										# Mostra anche le modifiche effettive (diff) apportate da ogni commit.
+  ```
+  L'output è simile a:
+		```powershell
+		commit 3f9c1bfae3f2d7b123456789abcdef123456789			# È l'hash identificativo del commit, unico per ogni cambiamento.
+		Author: Simone <simone@example.com>									# Chi ha fatto il commit.
+		Date:   Sat Apr 6 10:00 2025 +0200									# Quando è stato fatto.
+
+				Fix: corretto bug nel calcolo del fattoriale		# Descrizione data al commit.
+		```
+
+- **<span id="clone" style="font-size: 16px;">`$ git clone [url]`</span>**: ottieni una copia di un repository Git esistente, incluso lo storico dei commit, i rami, i tag, e la configurazione interna del progetto.
+	```powershell
+	git clone https://github.com/libgit2/libgit2
+	```
+
+- **<span id="tag" style="font-size: 16px;">`git tag`</span>**: è un'etichetta che viene assegnata a un commit specifico per indicare un <u>commit è importante</u> ed è usato spesso per segnare versioni stabili (esempio: `v1.0`, `v2.1.5`, ecc.).  
+  1. Usando semplicemente `git tag` andremo ad <u>elencare</u> tutti i tag, ordinati alfabeticamente. Non indica a quale commit puntano a meno che non si usi `git show`.
+  2. Per <u>filtrare</u> i tag si usa `-l`. Ad esempio, `git tag -l 'v1.8.5*'` elencherà solo i tag che iniziano con `v1.8.5`.
+  3. **Lightweight Tag** (tag leggero): un semplice riferimento, un puntatore, ad un commit. Non contiene informazioni extra come data, autore, messaggio. È praticamente come un **segnalibro**.
+		```powershell
+		git tag nome-tag
+		```  
+  4. **Annotated Tag** (tag annotato): questo tipo di tag viene salvato nel database Git come oggetto completo. È la <u>forma raccomandata</u> quando si rilasciano versioni ufficiali di un progetto perché conserva più informazioni.  
+		```powershell
+		git tag -a v1.4 -m 'my version 1.4'
+		```
+		Include:  
+		- Nome del tagger;  
+		- Email del tagger;  
+		- Data e ora;  
+		- Messaggio di tag;  
+		- Possibilità di firma con <abbr title="GNU Privacy Guard">GPG</abbr>.  
+	Quando si va a creare localmente un tag, Git lo memorizza solo nella nostra repository locale e per inviarlo ad server remoto dobbiamo eseguire, in ordine, i seguenti comandi:
+	```
+	git push origin master
+	git push [tagname]
+	```
+	oppure se si ha necessità di inviare più tag assieme si può usare
+	```
+	git push origin master
+	git push --tags
+	```
+
+- **<span id="show" style="font-size: 16px;">`git show`</span>**: mostra le informazioni salvate nel tag annotato e il commit a cui punta.  
+  ```powershell
+  git show v1.4
   ```
 
-  - **Esempio pratico**:  
-    Dopo alcuni commit, eseguendo `git log`, puoi vedere un output simile a:
-    ```powershell
-    commit 3f9c1bfae3f2d7b123456789abcdef123456789
-    Author: Simone <simone@example.com>
-    Date:   Sat Apr 6 10:00 2025 +0200
-
-        Fix: corretto bug nel calcolo del fattoriale
-
-    commit 1a2b3c4d5e6f7890123456789abcdef12345678
-    Author: Simone <simone@example.com>
-    Date:   Sat Apr 6 09:30 2025 +0200
-
-        Add: aggiunta funzione per il calcolo del massimo comune divisore
-    ```
-
-  - **Come leggerlo**:
-    - **commit**: è l'hash identificativo del commit, unico per ogni cambiamento.
-    - **Author**: chi ha fatto il commit.
-    - **Date**: quando è stato fatto.
-    - **Messaggio**: descrizione data al commit.
-
-  - **Opzioni utili**:
-    - `git log --oneline`: mostra ogni commit su una singola riga, molto più compatto.
-    - `git log --graph --oneline`: aggiunge anche un piccolo grafico ad albero, utile per visualizzare i rami.
-    - `git log -p`: mostra anche le modifiche effettive (diff) apportate da ogni commit.
-
-  - **Attenzione**:  
-    Il comando `git log` è solo di lettura. Non modifica nulla. È sicuro da usare tutte le volte che vuoi.
-
+---
+---
+---
+---
+---
+---
+---
+---
+---
 ---
 
-**Domande per verificare la tua comprensione**:
+- **`.gitignore`**: file di testo usato per dire a Git quali file o cartelle ignorare (non tracciare). Ogni riga rappresenta un pattern, ad esempio `*.log` ignora tutti i file `.log`, `build/` ignora tutta la cartella `build`. Si crea nella root del repository. Esempio:
+  ```bash
+  echo "*.log" >> .gitignore
+  echo "build/" >> .gitignore
+  git add .gitignore
+  git commit -m "Aggiunto file .gitignore"
+  ```
 
-1. Se modifichi un file e fai subito `git commit -m "Messaggio"` senza prima `git add`, che cosa accade?
-
-2. Se vuoi correggere il messaggio dell'ultimo commit perché hai scritto male una parola, quale comando devi usare?
-
-3. Se vuoi vedere rapidamente l’elenco dei tuoi ultimi 5 commit in modo compatto, che comando useresti?
-
----
-
-**Fonte**:  
-- Pro Git Book, Capitolo 2.1 — Git Basics  
-- Pro Git Book, Capitolo 2.2 — Git Status  
-- [Git SCM Documentation](https://git-scm.com/docs/git-commit)  
-- [Git SCM Documentation](https://git-scm.com/docs/git-log)
-
----
-
-Ti consiglio di provare subito alcuni di questi comandi in un repository di test, se vuoi posso anche proporti un esercizio pratico per consolidare!  
-Vuoi che te ne prepari uno? 🎯
-
-- `$ git log`
-   
-	Per visualizzare la cronologia dei commit il comando da eseguire sarà
-	
-	```powershell
-	$ git log
-	```
-   
-	By default, with no arguments, `git log` lists the commits made in that repository in reverse chronological order – that is, the most recent commits show up first. As you can see, this command lists each commit with its SHA-1 checksum, the author’s name and e-mail, the date written, and the commit message.
-   
- - Ci sono una marea di opzioni che puoi aggiungere a questo comando, tra le più utili abbiamo:
-    - `-p`, which shows the difference introduced in each commit. You can also use `-2`, which limits the output to only the last two entries:
-  		   
-		```powershell
-		$ git log -p -2
-		commit ca82a6dff817ec66f44342007202690a93763949
-		Author: Scott Chacon <schacon@gee-mail.com>
-		Date:   Mon Mar 17 21:52:11 2008 -0700
-
-			changed the version number
-
-		diff --git a/Rakefile b/Rakefile
-		index a874b73..8f94139 100644
-		--- a/Rakefile
-		+++ b/Rakefile
-		@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
-		spec = Gem::Specification.new do |s|
-		s.platform  =   Gem::Platform::RUBY
-		s.name      =   "simplegit"
-		-    s.version   =   "0.1.0"
-		+    s.version   =   "0.1.1"
-		s.author    =   "Scott Chacon"
-		s.email     =   "schacon@gee-mail.com"
-		s.summary   =   "A simple gem for using Git in Ruby code."
-
-		commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
-		Author: Scott Chacon <schacon@gee-mail.com>
-		Date:   Sat Mar 15 16:40:33 2008 -0700
-
-			removed unnecessary test
-
-		diff --git a/lib/simplegit.rb b/lib/simplegit.rb
-		index a0a60ae..47c6340 100644
-		--- a/lib/simplegit.rb
-		+++ b/lib/simplegit.rb
-		@@ -18,8 +18,3 @@ class SimpleGit
-		end
-
-		end
-		-
-		-if $0 == __FILE__
-		-  git = SimpleGit.new
-		-  puts git.show
-		-end
-		\ No newline at end of file
-		```
-		   
-    - You can also use a series of summarizing options with `git log`. For example, if you want to see some abbreviated stats for each commit, you can use the `--stat` option:
-       
-     ```powershell
-     $ git log --stat
-     commit ca82a6dff817ec66f44342007202690a93763949
-     Author: Scott Chacon <schacon@gee-mail.com>
-     Date:   Mon Mar 17 21:52:11 2008 -0700
-
-     	changed the version number
-
-     Rakefile | 2 +-
-     1 file changed, 1 insertion(+), 1 deletion(-)
-
-     commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
-     Author: Scott Chacon <schacon@gee-mail.com>
-     Date:   Sat Mar 15 16:40:33 2008 -0700
-
-     	removed unnecessary test
-
-     lib/simplegit.rb | 5 -----
-     1 file changed, 5 deletions(-)
-
-     commit a11bef06a3f659402fe7563abf99ad00de2209e6
-     Author: Scott Chacon <schacon@gee-mail.com>
-     Date:   Sat Mar 15 10:31:28 2008 -0700
-
-     	first commit
-
-     README           |  6 ++++++
-     Rakefile         | 23 +++++++++++++++++++++++
-     lib/simplegit.rb | 25 +++++++++++++++++++++++++
-     3 files changed, 54 insertions(+)
-     ```
-		   
-    - Another really useful option is `--pretty`. This option changes the log output to formats other than the default. A few prebuilt options are available for you to use. The `oneline` option prints each commit on a single line, which is useful if you’re looking at a lot of commits. In addition, the `short`, `full`, and `fuller` options show the output in roughly the same format but with less or more information, respectively:
-		   
-			```powershell
-			$ git log --pretty=oneline
-			ca82a6dff817ec66f44342007202690a93763949 changed the version number
-			085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7 removed unnecessary test
-			a11bef06a3f659402fe7563abf99ad00de2209e6 first commit
-			```
-		   
-    - The most interesting option is `format`, which allows you to specify your own log output format. This is especially useful when you’re generating output for machine parsing – because you specify the format explicitly, you know it won’t change with updates to Git:
-		   
-			```powershell
-			$ git log --pretty=format:"%h - %an, %ar : %s"
-			ca82a6d - Scott Chacon, 6 years ago : changed the version number
-			085bb3b - Scott Chacon, 6 years ago : removed unnecessary test
-			a11bef0 - Scott Chacon, 6 years ago : first commit
-			```
-		   
-		[Useful options for `git log --pretty=format`](https://git-scm.com/book/it/v2/ch00/rpretty_format) lists some of the more useful options that format takes.
-		   
-   
-  ---
-   
-  #### **Limiting Log Output**
-   
-	In addition to output-formatting options, `git log` takes a number of useful limiting options – that is, options that let you show only a subset of commits. You’ve seen one such option already – the `-2` option, which show only the last two commits. In fact, you can do `-<n>`, where `n` is any integer to show the last `n` commits. In reality, you’re unlikely to use that often, because Git by default pipes all output through a pager so you see only one page of log output at a time.
-
-	However, the time-limiting options such as `--since` and `--until` are very useful. For example, this command gets the list of commits made in the last two weeks:
-
-	`$ git log --since=2.weeks`
-   
-	This command works with lots of formats – you can specify a specific date like `"2008-01-15"`, or a relative date such as `"2 years 1 day 3 minutes ago"`.
-   
-   You can also filter the list to commits that match some search criteria. The `--author` option allows you to filter on a specific author, and the `--grep` option lets you search for keywords in the commit messages. (Note that if you want to specify both author and grep options, you have to add `--all-match` or the command will match commits with either.)
-   
-   Another really helpful filter is the `-S` option which takes a string and only shows the commits that introduced a change to the code that added or removed that string. For instance, if you wanted to find the last commit that added or removed a reference to a specific function, you could call:
-   
-   `$ git log -Sfunction_name`
-   
-   The last really useful option to pass to `git log` as a filter is a path. If you specify a directory or file name, you can limit the log output to commits that introduced a change to those files. This is always the last option and is generally preceded by double dashes (`--`) to separate the paths from the options.
-   
-   In [Options to limit the output of `git log`](https://git-scm.com/book/it/v2/ch00/rlimit_options) we’ll list these and a few other common options for your reference.
-   
-- `$ git clone`
-   
-	Se desideri ottenere una copia di un repository Git esistente, il comando che ti serve è `git clone [url]`:
-
-	```powershell
-	$ git clone https://github.com/libgit2/libgit2
-	```
-   
-- [`$ git tag](https://git-scm.com/book/it/v2/Git-Basics-Tagging) (e $ git show)`
-   
-	Come la maggior parte dei VCS, Git ha la capacità di contrassegnare punti specifici della storia come importanti. In genere le persone utilizzano questa funzionalità per contrassegnare i release points (v1.0 e così via). In questa sezione imparerai come elencare i tag disponibili, come crearne di nuovi e quali sono i diversi tipi di tag.
-
-	#### **Listing Your Tags**
-   
-	Elencare i tag disponibili in Git è semplice. Basta digitare `git tag`:
-	
-	```powershell
-	$ git tag
-	v0.1
-	v1.3
-	```
-   
-	Questo comando elenca i tag in ordine alfabetico; l'ordine in cui appaiono non ha alcuna reale importanza.
-	
-	Puoi anche cercare tag con uno schema particolare. Il repository sorgente Git, ad esempio, contiene più di 500 tag. Se sei interessato solo a guardare la serie 1.8.5, puoi eseguire questo:
-   
-	```powershell
-	$ git tag -l 'v1.8.5*'
-	v1.8.5
-	v1.8.5-rc0
-	v1.8.5-rc1
-	v1.8.5-rc2
-	v1.8.5-rc3
-	v1.8.5.1
-	v1.8.5.2
-	v1.8.5.3
-	v1.8.5.4
-	v1.8.5.5
-	```
-   
-	#### **Creating Tags**
-	
-	Git utilizza due tipi principali di tag: leggeri (Lightweight) e annotati (Annotated).
-	
-	Un tag leggero è molto simile a un ramo che non cambia: è solo un puntatore a un commit specifico.
-	
-	I tag annotati, tuttavia, vengono archiviati come oggetti completi nel database Git. Hanno un checksum; contenere il nome del tagger, l'e-mail e la data; avere un messaggio di tag; e può essere firmato e verificato con GNU Privacy Guard (GPG). In genere è consigliabile creare tag annotati in modo da poter avere tutte queste informazioni; ma se desideri un tag temporaneo o per qualche motivo non vuoi conservare le altre informazioni, sono disponibili anche tag leggeri.
-   
-	#### **Annotated Tags**
-	
-	Creating an annotated tag in Git is simple. The easiest way is to specify `-a` when you run the `tag` command:
-	
-	```powershell
-	$ git tag -a v1.4 -m 'my version 1.4'
-	$ git tag
-	v0.1
-	v1.3
-	v1.4
-	```
-	
-	You can see the tag data along with the commit that was tagged by using the `git show` command:
-   
-	```powershell
-	$ git show v1.4
-	tag v1.4
-	Tagger: Ben Straub <ben@straub.cc>
-	Date:   Sat May 3 20:19:12 2014 -0700
-	
-	my version 1.4
-	
-	commit ca82a6dff817ec66f44342007202690a93763949
-	Author: Scott Chacon <schacon@gee-mail.com>
-	Date:   Mon Mar 17 21:52:11 2008 -0700
-	
-		changed the version number
-	```
-
-	That shows the tagger information, the date the commit was tagged, and the annotation message before showing the commit information.
-   
-	#### **Lightweight Tags**
-	
-	Another way to tag commits is with a lightweight tag. This is basically the commit checksum stored in a file – no other information is kept. To create a lightweight tag, don’t supply the `-a`, `-s`, or `-m` option:
-	
-	```powershell
-	$ git tag v1.4-lw
-	$ git tag
-	v0.1
-	v1.3
-	v1.4
-	v1.4-lw
-	v1.5
-	```
-   
-	This time, if you run `git show` on the tag, you don’t see the extra tag information. The command just shows the commit:
-	
-	```powershell
-	$ git show v1.4-lw
-	commit ca82a6dff817ec66f44342007202690a93763949
-	Author: Scott Chacon <schacon@gee-mail.com>
-	Date:   Mon Mar 17 21:52:11 2008 -0700
-	
-		changed the version number
-	```
-   
-	#### **Tagging Later**
-	
-	You can also tag commits after you’ve moved past them. Suppose your commit history looks like this:
-   
-	```powershell
-	$ git log --pretty=oneline
-	15027957951b64cf874c3557a0f3547bd83b3ff6 Merge branch 'experiment'
-	a6b4c97498bd301d84096da251c98a07c7723e65 beginning write support
-	0d52aaab4479697da7686c15f77a3d64d9165190 one more thing
-	6d52a271eda8725415634dd79daabbc4d9b6008e Merge branch 'experiment'
-	0b7434d86859cc7b8c3d5e1dddfed66ff742fcbc added a commit function
-	4682c3261057305bdd616e23b64b0857d832627b added a todo file
-	166ae0c4d3f420721acbb115cc33848dfcc2121a started write support
-	9fceb02d0ae598e95dc970b74767f19372d61af8 updated rakefile
-	964f16d36dfccde844893cac5b347e7b3d44abbc commit the todo
-	8a5cbc430f1a9c3d00faaeffd07798508422908a updated readme
-	```
-   
-	Now, suppose you forgot to tag the project at v1.2, which was at the “updated rakefile” commit. You can add it after the fact. To tag that commit, you specify the commit checksum (or part of it) at the end of the command:
-	
-	`$ git tag -a v1.2 9fceb02`
-   
-	You can see that you’ve tagged the commit:
-	
-	```powershell
-	$ git tag
-	v0.1
-	v1.2
-	v1.3
-	v1.4
-	v1.4-lw
-	v1.5
-   
-	$ git show v1.2
-	tag v1.2
-	Tagger: Scott Chacon <schacon@gee-mail.com>
-	Date:   Mon Feb 9 15:32:16 2009 -0800
-	
-	version 1.2
-	commit 9fceb02d0ae598e95dc970b74767f19372d61af8
-	Author: Magnus Chacon <mchacon@gee-mail.com>
-	Date:   Sun Apr 27 20:43:35 2008 -0700
-	
-		updated rakefile
-	...
-	```
-   
-	#### **Sharing Tags**
-	
-	By default, the `git push` command doesn’t transfer tags to remote servers. You will have to explicitly push tags to a shared server after you have created them. This process is just like sharing remote branches – you can run `git push origin [tagname]`.
-	
-	```powershell
-	$ git push origin v1.5
-	Counting objects: 14, done.
-	Delta compression using up to 8 threads.
-	Compressing objects: 100% (12/12), done.
-	Writing objects: 100% (14/14), 2.05 KiB | 0 bytes/s, done.
-	Total 14 (delta 3), reused 0 (delta 0)
-	To git@github.com:schacon/simplegit.git
-* [new tag]         v1.5 -> v1.5
-	```
-   
-	If you have a lot of tags that you want to push up at once, you can also use the `--tags` option to the `git push` command. This will transfer all of your tags to the remote server that are not already there.
-	
-	```powershell
-	$ git push origin --tags
-	Counting objects: 1, done.
-	Writing objects: 100% (1/1), 160 bytes | 0 bytes/s, done.
-	Total 1 (delta 0), reused 0 (delta 0)
-	To git@github.com:schacon/simplegit.git
-* [new tag]         v1.4 -> v1.4
-* [new tag]         v1.4-lw -> v1.4-lw
-	```
-   
-	Now, when someone else clones or pulls from your repository, they will get all your tags as well.
-	
-	### **Checking out Tags**
-	
-	You can’t really check out a tag in Git, since they can’t be moved around. If you want to put a version of your repository in your working directory that looks like a specific tag, you can create a new branch at a specific tag:
-	
-	```powershell
-	$ git checkout -b version2 v2.0.0
-	Switched to a new branch 'version2'
-	```
-	
-	Of course if you do this and do a commit, your `version2` branch will be slightly different than your `v2.0.0` tag since it will move forward with your new changes, so do be careful.
-   
 - `.gitignore`
    
 	Spesso avrai una classe di file che non vuoi che Git aggiunga automaticamente o addirittura ti mostri come non tracciati. Si tratta generalmente di file generati automaticamente come file di registro o file prodotti dal sistema di compilazione. In questi casi, è possibile creare un elenco di modelli di file corrispondenti denominati `.gitignore`. Eccone un esempio:
@@ -563,6 +244,19 @@ Vuoi che te ne prepari uno? 🎯
    
 	| **Suggerimento** | GitHub maintains a fairly comprehensive list of good `.gitignore` file examples for dozens of projects and languages at https://github.com/github/gitignore if you want a starting point for your project. |
 	| --- | --- |
+
+- **`$ git rm`**: comando che rimuove file sia dal working directory che dall’indice (staging area), preparando la rimozione per il prossimo commit. Se vuoi solo smettere di tracciarlo ma lasciarlo sul disco, devi usare l’opzione `--cached`. Esempio:
+  ```bash
+  git rm file.txt
+  git commit -m "Rimosso file.txt"
+  ```
+  oppure per ignorarlo mantenendolo:
+  ```bash
+  git rm --cached file.txt
+  echo "file.txt" >> .gitignore
+  git commit -m "Ignora file.txt"
+  ```
+
 - `$ git rm`
    
 	To remove a file from Git, you have to remove it from your tracked files (more accurately, remove it from your staging area) and then commit. The `git rm` command does that, and also removes the file from your working directory so you don’t see it as an untracked file the next time around.
@@ -618,6 +312,25 @@ Vuoi che te ne prepari uno? 🎯
 
 	This command removes all files that end with ~.
    
+
+- **`$ git mv`**: comando che sposta o rinomina un file o una cartella e automaticamente aggiorna l’indice. È equivalente a fare manualmente `mv` e poi `git add` e `git rm`. Esempio:
+  ```bash
+  git mv vecchio_nome.txt nuovo_nome.txt
+  git commit -m "Rinominato file"
+  ```
+
+- **`$ git diff`**: mostra le differenze riga per riga tra i file modificati e l’ultima versione tracciata (HEAD o staging area). Serve per vedere *cosa* cambierà prima di committare. Esempio:
+  ```bash
+  git diff
+  ```
+  mostra le modifiche non ancora aggiunte, mentre
+  ```bash
+  git diff --staged
+  ```
+  mostra le modifiche che hai già aggiunto con `git add` e che finiranno nel prossimo commit.
+
+---
+
 - `$ git mv`
    
 	Per rinominare un file in Git possiamo usare il comando:
