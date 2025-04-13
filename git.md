@@ -11,6 +11,8 @@
 - [.gitignore](#gitignore)
 - [rm](#rm)
 - [mv](#mv)
+- [diff](#diff)
+- [restore](#restore)
 
 - [Per collegarsi ad un server remoto](#collegarsi-ad-un-server-remoto)
 - [Bibliografia](#bibliografia)
@@ -26,17 +28,17 @@ Tra questi, **Git**, creato da Linus Torvalds nel 2005, è ad oggi lo standard d
 - <u>Flessibilità</u>, perché ogni sviluppatore può lavorare indipendentemente;
 - <u>Sicurezza</u>, perché la perdita di un server centrale non compromette il progetto;
 - <u>Efficienza</u>, grazie alla gestione rapida di versioni e modifiche. 
-  Git considera i propri dati più come una sequenza di istantanee (**snapshot**) in un mini filesystem. Ogni
-  volta che si registra (commit) lo stato del progetto, Git fondamentalmente fa un’immagine di tutti i file in quel momento e per essere efficiente, se alcuni file non sono cambiati, non li risalva, ma crea semplicemente un collegamento al file già precedente salvato.
+  Git considera i propri dati più come una sequenza di istantanee (**snapshot**) in un mini filesystem. Ogni volta che si registra (commit) lo stato del progetto, Git fondamentalmente fa un’immagine di tutti i file in quel momento e per essere efficiente, se alcuni file non sono cambiati, non li risalva, ma crea semplicemente un collegamento al file già precedente salvato.  
+La maggior parte delle operazioni in Git sono _in locale_, con pochissima latenza dovuta al fatto che l'intera storia del progetto (e tutto ciò che serve a farlo funzionare) è sul disco locale. Inoltre, l'_integrità_ dei progetti è garantita dal fatto che Git aggiunge solo dati e ogni azione è controllata da un checksum, con meccanismo di hash SHA-1, impedendo ogni possibilità di perdita o corruzione di file senza che Git non se ne accorga.  
 
-# Setup
+<!-- Nel libro ProGit sono arrivato a pagina 10 -->
 
 - I file in Git possono essere in tre stati principali:
   - ***modified*** (modificati): il file è stato modificato, ma non è ancora stato committato nel database.  
   - ***staged*** (in stage): hai contrassegnato un file, modificato nella versione corrente, perché venga inserito nello snapshot alla prossima commit.
   - ***committed*** (committati): il file è registrato al sicuro nel database locale.
 	
-	<img src="https://git-scm.com/book/en/v2/images/areas.png" alt="Rappresentazione dei tre stati possibili in Git" width="40%">
+	<img src="./img/7_areas.png" alt="Rappresentazione dei tre stati possibili in Git" width="40%">
 	
 
 L’**albero di lavoro** è un checkout di una versione specifica del progetto. Questi file vengono estratti dal database compresso nella directory di Git, e salvati sul disco per essere usati o modificati.
@@ -69,17 +71,14 @@ Puoi, per esempio, leggere la pagina man del comando config eseguendo:
 ```powershell
 $ git help config
 ```
-# [*Cos'è, come funziona e come usare GIT*](https://youtu.be/qj_q0idpeMQ?si=wKBShBqM7aJyM2w_)
+
+# Setup
+
+# *Cos'è, come funziona e come usare GIT*
 
 Per prima cosa, è utile sapere che usando “**<span style="color: skyblue;">Git</span> <span style="color: #FDDC5C;">Ba</span><span style="color: green;">sh</span>**” potrebbero esserci delle funzioni in più rispetto che ad usare git nel terminale di Windows.
 
-Aprendo l’applicazione tra le prime cose che dobbiamo fare è spostarci nella cartella in cui desideriamo lavorare e quindi utilizzare il comando `cd` seguito dal percorso della cartella tra le virgolette.	
-
-<!-- Nel libro ProGit sono arrivato a pagina 8 -->
-
----
----
----
+Aprendo l’applicazione, tra le prime cose che dobbiamo fare è spostarci nella cartella in cui desideriamo lavorare e quindi utilizzare il comando `cd` seguito dal percorso della cartella tra le virgolette.  
 
 ## Tra i comandi più utili abbiamo:
 
@@ -191,7 +190,7 @@ Aprendo l’applicazione tra le prime cose che dobbiamo fare è spostarci nella 
   - I modelli glob standard funzionano.  
   	Essi sono come espressioni regolari semplificate utilizzate dalle shell. Un asterisco ( `*`) corrisponde a zero o più caratteri; `[abc]`corrisponde a qualsiasi carattere all'interno delle parentesi (in questo caso a, b o c); un punto interrogativo ( `?`) corrisponde a un singolo carattere; e le parentesi che racchiudono caratteri separati da un trattino( `[0-9]`) corrispondono a qualsiasi carattere tra di loro (in questo caso da 0 a 9). Puoi anche utilizzare due asterischi per abbinare le directory nidificate; `a/**/z`corrisponderebbe a `a/z`, `a/b/z`, `a/b/c/z`, e così via.
    
-- **<span id="rm" style="font-size: 16px;">`$ git rm`</span>**: rimuove file sia dal working directory che dall’indice (staging area). Se vuoi solo smettere di tracciarlo ma lasciarlo sul disco, devi usare l’opzione `--cached`.  
+- **<span id="rm" style="font-size: 16px;">`$ git rm`</span>**: rimuove file sia dalla working directory che dall’indice (staging area). Se vuoi solo smettere di tracciarlo ma lasciarlo sul disco, devi usare l’opzione `--cached`.  
   ```powershell
   git rm file.txt
   git commit -m "Rimosso file.txt"
@@ -217,7 +216,7 @@ Aprendo l’applicazione tra le prime cose che dobbiamo fare è spostarci nella 
 	git commit -m "Rinominato file"
   ```
   
-- **`$ git diff`**: mostra le differenze, riga per riga, tra i file modificati e l’ultima versione tracciata (HEAD o staging area). Serve per vedere *cosa* cambierà prima di committare.  
+- **<span id="diff" style="font-size: 16px;">`$ git diff`</span>**: mostra le differenze, riga per riga, tra i file modificati e l’ultima versione tracciata (HEAD o staging area). Serve per vedere *cosa* cambierà prima di committare.  
   ```powershell
   git diff
   ```
@@ -229,6 +228,20 @@ Aprendo l’applicazione tra le prime cose che dobbiamo fare è spostarci nella 
 
 	Insomma, serve se il comando `$ git status` fosse un po’ troppo vago per i tuoi standard e tu volessi sapere esattamente cosa è cambiato.  
 	
+- **<span id="restore" style="font-size: 16px;">`$ git restore`</span>**: **ripristina** file nella working directory (*directory di lavoro*) o nell’area di staging, scartando modifiche indesiderate senza alterare la cronologia del repository (quindi senza creare commit).
+
+  - `git restore <file>`: **annulla le modifiche locali** al file, ripristinandolo dalla versione nell’ultimo commit (HEAD)o dall'area di staging.  
+  - `git restore --staged <file>`: rimuove il file dall'**area di staging**, riportandolo nello stato di "modificato ma non in stage". È utile se hai aggiunto un file con `git add` ma ti sei accorto di aver sbagliato.
+  - `git restore --source <commit> <file>`: ripristina il file a una versione specifica indicata da un commit passato, senza influenzare altri file.
+  - `git restore --worktree <file>`: ripristina il file solo nella working directory, mantenendo invariata la versione in stage.
+
+  Senza opzioni aggiuntive, `git restore` opera sulla **working directory**. Con `--staged`, opera sull'**area di staging**; usando entrambe le opzioni contemporaneamente, puoi ripristinare file in entrambi i luoghi con un solo comando.
+  Attenzione: `git restore` elimina le modifiche locali **senza chiedere conferma**, quindi è importante usarlo solo quando sei certo di voler scartare i cambiamenti.
+
+---
+---
+---
+
 ## Collegarsi ad un server remoto  
 
 [Per collegarsi ad un server remoto](https://youtu.be/qj_q0idpeMQ?t=641&si=9j7vWgyLVRmaP7Nv) (come GitHub) dobbiamo usare il comando `$ git remote`.  

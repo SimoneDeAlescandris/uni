@@ -38,7 +38,7 @@ Markdown fornisce una sintassi più semplice rispetto all'HTML, pur venendo trad
 - *<span id="italic">Italic</span>*: per rendere in corsivo una frase si circonda le sue parole con un underscore (`_`) o un asterisco. Es.: `_this_` o `*that*`.
 - **<span id="bold">Bold</span>**: similmente il grassetto lo si ottiene circondando la parola con due asteristichi. Oppure usando due underscore, scelta meno comune. Es.: `**this**` o `__that__`.  
   Per avere sia Bold che Italic possiamo usare un triplo underscore, triplo asterisco oppure un mix fra asterischi e underscore. Es.: `___this___`, `***that***`, `_**these**_` o `**_those_**`.
-- ~~<span id="Strikethrough">Strikethrough</span>~~: si usa il simbolo `~` (tilde), richiamabile su Windows tenendo premuto `ALT + 126`. Es.: `~~this~~`
+- ~~<span id="strikethrough">Strikethrough</span>~~: si usa il simbolo `~` (tilde), richiamabile su Windows tenendo premuto `ALT + 126`. Es.: `~~this~~`
 - <span id="Underline"><u>Underline</u></span>: testo sottolineato non supportato nativamente, bisogna ricorrere al tag HTML `<u>`.
 - **<span id="Header" style="font-size: 20px;">Header</span>**: nei titoli si antepone alla frase il cancelletto e, come in HTML, mettendone un numero che va da uno (`#`, equivalente a `<h1>`) a sei (`######`, equivalente a `<h6>`) si ottiene una diversa grandezza per il titolo. <br><br>
 
