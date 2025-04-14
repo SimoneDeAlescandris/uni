@@ -17,44 +17,71 @@
 - [Per collegarsi ad un server remoto](#collegarsi-ad-un-server-remoto)
 - [Bibliografia](#bibliografia)
 
----
----
----
+<!-- Completare Indice -->
+
+<img src="./img/6_git.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
 
 # Introduzione
 
 Un Sistema di Controllo Versione (**VCS**, _Version Control System_) registra nel tempo le modifiche apportate a un file o a un insieme di file, permettendo di ripristinare versioni precedenti in qualsiasi momento. Utilizzarne uno è fondamentale per mantenere la cronologia completa delle modifiche e garantire un recupero rapido in caso di errori.  
-Tra questi, **Git**, creato da Linus Torvalds nel 2005, è ad oggi lo standard de facto. È un sistema di controllo versione <u>distribuito</u>, il che significa che ogni sviluppatore possiede una copia completa del progetto, comprensiva della sua cronologia. Questa caratteristica offre:
-- <u>Flessibilità</u>, perché ogni sviluppatore può lavorare indipendentemente;
-- <u>Sicurezza</u>, perché la perdita di un server centrale non compromette il progetto;
-- <u>Efficienza</u>, grazie alla gestione rapida di versioni e modifiche. 
+Tra questi, **Git**, creato da Linus Torvalds nel 2005, è ad oggi lo standard de facto. È un sistema di controllo versione <u>distribuito</u>, il che significa che ogni sviluppatore possiede una copia completa del progetto, comprensiva della sua cronologia. Questa caratteristica offre:  
+- <u>Flessibilità</u>, perché ogni sviluppatore può lavorare indipendentemente;  
+- <u>Sicurezza</u>, perché la perdita di un server centrale non compromette il progetto;  
+- <u>Efficienza</u>, grazie alla gestione rapida di versioni e modifiche.  
   Git considera i propri dati più come una sequenza di istantanee (**snapshot**) in un mini filesystem. Ogni volta che si registra (commit) lo stato del progetto, Git fondamentalmente fa un’immagine di tutti i file in quel momento e per essere efficiente, se alcuni file non sono cambiati, non li risalva, ma crea semplicemente un collegamento al file già precedente salvato.  
 La maggior parte delle operazioni in Git sono _in locale_, con pochissima latenza dovuta al fatto che l'intera storia del progetto (e tutto ciò che serve a farlo funzionare) è sul disco locale. Inoltre, l'_integrità_ dei progetti è garantita dal fatto che Git aggiunge solo dati e ogni azione è controllata da un checksum, con meccanismo di hash SHA-1, impedendo ogni possibilità di perdita o corruzione di file senza che Git non se ne accorga.  
 
-<!-- Nel libro ProGit sono arrivato a pagina 10 -->
+## I Tre Stati  
 
-- I file in Git possono essere in tre stati principali:
-  - ***modified*** (modificati): il file è stato modificato, ma non è ancora stato committato nel database.  
-  - ***staged*** (in stage): hai contrassegnato un file, modificato nella versione corrente, perché venga inserito nello snapshot alla prossima commit.
-  - ***committed*** (committati): il file è registrato al sicuro nel database locale.
-	
-	<img src="./img/7_areas.png" alt="Rappresentazione dei tre stati possibili in Git" width="40%">
-	
+In Git, i file possono trovarsi in tre stati principali:  
+- ***modified*** (*modificati*): il file è stato modificato, ma non ancora committato nel database.  
+- ***staged*** (_in stage_): il file, modificato nella versione corrente, è stato selezionato per essere incluso nel prossimo snapshot (commit).    
+- ***committed*** (*committati*): il file è stato salvato in modo sicuro nel database locale di Git.
 
-L’**albero di lavoro** è un checkout di una versione specifica del progetto. Questi file vengono estratti dal database compresso nella directory di Git, e salvati sul disco per essere usati o modificati.
+Questi stati si collegano a tre concetti fondamentali:  
+- **Working Tree** (*albero di lavoro*): una copia di una versione specifica del progetto. I file vengono estratti dal database compresso di Git e resi disponibili sul disco locale per essere consultati o modificati.  
+- **Staging Area** (*area di stage*): un file, situato generalmente nella directory di Git, che registra le informazioni sui cambiamenti destinati al prossimo commit. È anche chiamato **indice** (*index*). 
+- **Git Directory** (*directory di Git*): luogo dove Git archivia i metadati e il database degli oggetti del progetto. È la parte più importante di Git ed è ciò che viene effettivamente copiato quando si clona un repository.  
 
-L’***area di stage*** è un file, contenuto generalmente nella directory di Git, con tutte le informazioni riguardanti la tua prossima commit. Il suo nome tecnico nel gergo di Git è ***indice***.
+Il flusso di lavoro (***workflow***) è più o meno il seguente:  
+1. Modifica i file nel tuo albero di lavoro.  
+2. Aggiungi all'area di stage solo le modifiche che desideri includere nel prossimo commit.  
+3. Committa, i file presenti nell'area di stage, creando un’istantanea (**_snapshot_**) permanente nella directory di Git.  
 
-La directory di Git è dove Git salva i metadati e il database degli oggetti del tuo progetto. Questa è la parte più importante di Git, ed è ciò che viene copiato quando si clona un repository da un altro computer.
+Se una particolare versione di un file è presente nella directory Git, è considerata **committata** (*committed*). Se il file è stato modificato e aggiunto all’area di stage, è **in stage** (*staged*). Se il file è stato modificato, da quando è stato estratto, ma non ancora aggiunto all’area di stage, è semplicemente **modificato** (*modified*).  
 
-- Il flusso di lavoro (***workflow***) di base in Git funziona così:
-	1. Modifica i file nel tuo albero di lavoro.
-	2. Seleziona per lo stage solo quei cambiamenti che vuoi facciano parte del tuo prossimo commit, che aggiunge solo queste modifiche all’area di stage.
-	3. Committa, ovvero salva i file nell’area di stage in un’istantanea (***snapshot***) permanente nella tua directory di Git.
+<img src="./img/7_areas.png" alt="Rappresentazione dei tre stati possibili in Git" title="Rappresentazione dei tre stati possibili in Git" width="60%" style="display:block; margin-left:auto; margin-right:auto;">
 
-Se una particolare versione di un file è nella directory git, viene considerata già committata (***committed***). Se il file è stato modificato, ma è stato aggiunto all’area di staging, è ***in stage***. E se è stato modificato da quando è stata estratto, ma non è ***in stage***, è ***modificato***.
+## Distinzione tra Git e GitHub
 
-<img src="./img/6_git.png" alt="Logo Git" title="Logo Git" width="8%" style="float:left; position: relative; padding:2%">
+Prima di proseguire con la configurazione pratica di Git, è utile chiarire la differenza tra **Git** e **GitHub**.  
+**Git** è uno strumento locale per il controllo di versione, che ti permette di gestire lo sviluppo di un progetto in modo distribuito.  
+**GitHub** è una piattaforma web che offre servizi di hosting per repository Git, oltre a funzionalità aggiuntive come la collaborazione tra sviluppatori, la gestione delle modifiche tramite pull request e l’integrazione continua (CI/CD).
+
+Git è indipendente da GitHub: puoi usare Git in locale senza mai utilizzare GitHub, ma non puoi utilizzare GitHub senza Git.
+
+## Configurazione Iniziale di Git
+
+Passando alla pratica, l'unico posto che ci consente di poter sfruttare tutte il potenziale di Git è la riga di comando (“**<span style="color: skyblue;">Git</span> <span style="color: #FDDC5C;">Ba</span><span style="color: green;">sh</span>**”). Molte interfaccie grafiche, per semplificare, implementanto solo una parte delle funzionalità di Git.  
+
+Prima di iniziare ad usarlo, dobbiamo installarlo sul nostro device. Per farlo riferesti al [sito ufficiale](https://git-scm.com/downloads). Se lo volessimo installare su Android, è possibile usando un'applicazione che emuli il terminale di Linux, come [Termux](https://play.google.com/store/apps/details?id=com.termux&hl=it).  
+
+Successivamente dobbiamo inserire le nostre **credenziali** ed è conveniente utilizzare le stesse sia su Git (locale) che su GitHub (remoto) in modo che ogni interazione, come *push* o *pull*, avvengano senza problemi e ogni *commit* in locale sia correttamente associato al nostro repository remoto predefinito.  
+```powershell  
+git config --global user.name "IlTuoNomeUtente"
+git config --global user.email "la.tua.email@example.com"
+```  
+
+---
+<!-- Nel libro ProGit sono arrivato a pagina 14 -->
+<!-- Vorrei mettere anche la parte di Checking Your Settings. Da traduttore e adattare. -->
+
+Aprendo l’applicazione, tra le prime cose che dobbiamo fare è spostarci nella cartella in cui desideriamo lavorare e quindi utilizzare il comando `cd` seguito dal percorso della cartella tra le virgolette.  
+
+### Suggerimenti Opzionali
+- Quando parlerai della configurazione di Git, potresti già anticipare brevemente **cosa sono remoti** (*remote repositories*) come GitHub, per dare una visione d'insieme.
+- Alla fine del capitolo potresti proporre un **esercizio pratico** tipo:
+  - Crea una cartella, inizializza un repository Git, crea e modifica file, prova a portarli attraverso i tre stati.
 
 ### **`Chiedere aiuto`**
 
@@ -71,14 +98,6 @@ Puoi, per esempio, leggere la pagina man del comando config eseguendo:
 ```powershell
 $ git help config
 ```
-
-# Setup
-
-# *Cos'è, come funziona e come usare GIT*
-
-Per prima cosa, è utile sapere che usando “**<span style="color: skyblue;">Git</span> <span style="color: #FDDC5C;">Ba</span><span style="color: green;">sh</span>**” potrebbero esserci delle funzioni in più rispetto che ad usare git nel terminale di Windows.
-
-Aprendo l’applicazione, tra le prime cose che dobbiamo fare è spostarci nella cartella in cui desideriamo lavorare e quindi utilizzare il comando `cd` seguito dal percorso della cartella tra le virgolette.  
 
 ## Tra i comandi più utili abbiamo:
 
@@ -242,6 +261,7 @@ Aprendo l’applicazione, tra le prime cose che dobbiamo fare è spostarci nella
 ---
 ---
 
+<!-- TODO -->
 ## Collegarsi ad un server remoto  
 
 [Per collegarsi ad un server remoto](https://youtu.be/qj_q0idpeMQ?t=641&si=9j7vWgyLVRmaP7Nv) (come GitHub) dobbiamo usare il comando `$ git remote`.  
@@ -273,4 +293,5 @@ https://www.instagram.com/p/C_K4qfnI2Ga/?igsh=MW0ya3kyZnMwbGJsdA==
 - [Using Git source control in VS Code](https://code.visualstudio.com/docs/sourcecontrol/overview);
 - [Introduction to Git in VS Code](https://code.visualstudio.com/docs/sourcecontrol/intro-to-git);
 - [Version control in VS Code](https://code.visualstudio.com/docs/introvideos/versioncontrol);
-- [Working with GitHub in VS Code](https://code.visualstudio.com/docs/sourcecontrol/github).
+- [Working with GitHub in VS Code](https://code.visualstudio.com/docs/sourcecontrol/github);
+- [git - la guida tascabile](https://rogerdudler.github.io/git-guide/index.it.html).
