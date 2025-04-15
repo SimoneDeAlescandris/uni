@@ -1,11 +1,12 @@
 # Indice
 
 - [init](#init)
+- [clone](#clone)
+- [remote](#remote)
 - [add](#add)
 - [status](#status)
 - [commit](#commit)
 - [log](#log)
-- [clone](#clone)
 - [tag](#tag)
 - [show](#show)
 - [.gitignore](#gitignore)
@@ -13,6 +14,7 @@
 - [mv](#mv)
 - [diff](#diff)
 - [restore](#restore)
+- [help](#help)
 
 - [Per collegarsi ad un server remoto](#collegarsi-ad-un-server-remoto)
 - [Bibliografia](#bibliografia)
@@ -43,14 +45,14 @@ Questi stati si collegano a tre concetti fondamentali:
 - **Staging Area** (*area di stage*): un file, situato generalmente nella directory di Git, che registra le informazioni sui cambiamenti destinati al prossimo commit. È anche chiamato **indice** (*index*). 
 - **Git Directory** (*directory di Git*): luogo dove Git archivia i metadati e il database degli oggetti del progetto. È la parte più importante di Git ed è ciò che viene effettivamente copiato quando si clona un repository.  
 
-Il flusso di lavoro (***workflow***) è più o meno il seguente:  
-1. Modifica i file nel tuo albero di lavoro.  
-2. Aggiungi all'area di stage solo le modifiche che desideri includere nel prossimo commit.  
-3. Committa, i file presenti nell'area di stage, creando un’istantanea (**_snapshot_**) permanente nella directory di Git.  
+> Il flusso di lavoro (***workflow***) è più o meno il seguente:  
+> 1. Modifica i file nel tuo albero di lavoro.  
+> 2. Aggiungi all'area di stage solo le modifiche che desideri includere nel prossimo commit.  
+> 3. Committa, i file presenti nell'area di stage, creando un’istantanea (**_snapshot_**) permanente nella directory di Git.  
 
 Se una particolare versione di un file è presente nella directory Git, è considerata **committata** (*committed*). Se il file è stato modificato e aggiunto all’area di stage, è **in stage** (*staged*). Se il file è stato modificato, da quando è stato estratto, ma non ancora aggiunto all’area di stage, è semplicemente **modificato** (*modified*).  
 
-<img src="./img/7_areas.png" alt="Rappresentazione dei tre stati possibili in Git" title="Rappresentazione dei tre stati possibili in Git" width="60%" style="display:block; margin-left:auto; margin-right:auto;">
+<img src="./img/7_areas.png" alt="Rappresentazione dei tre stati possibili in Git" title="Rappresentazione dei tre stati possibili in Git" width="50%" style="display:block; margin-left:auto; margin-right:auto;">
 
 ## Distinzione tra Git e GitHub
 
@@ -60,51 +62,72 @@ Prima di proseguire con la configurazione pratica di Git, è utile chiarire la d
 
 Git è indipendente da GitHub: puoi usare Git in locale senza mai utilizzare GitHub, ma non puoi utilizzare GitHub senza Git.
 
+<!-- Parlare qui dei repository remoti? -->
+
 ## Configurazione Iniziale di Git
 
-Passando alla pratica, l'unico posto che ci consente di poter sfruttare tutte il potenziale di Git è la riga di comando (“**<span style="color: skyblue;">Git</span> <span style="color: #FDDC5C;">Ba</span><span style="color: green;">sh</span>**”). Molte interfaccie grafiche, per semplificare, implementanto solo una parte delle funzionalità di Git.  
+Passando alla pratica, l'unico posto che ci consente di poter sfruttare tutte il potenziale di Git è la riga di comando (“**<span style="color: skyblue;">Git</span> <span style="color: #FDDC5C;">Ba</span><span style="color: green;">sh</span>**”). Molte interfaccie grafiche implementano solo una parte delle funzionalità per semplificarne l’uso.  
 
-Prima di iniziare ad usarlo, dobbiamo installarlo sul nostro device. Per farlo riferesti al [sito ufficiale](https://git-scm.com/downloads). Se lo volessimo installare su Android, è possibile usando un'applicazione che emuli il terminale di Linux, come [Termux](https://play.google.com/store/apps/details?id=com.termux&hl=it).  
+Prima di iniziare ad usarlo, dobbiamo installarlo sul nostro device. Per farlo riferirsi al [sito ufficiale](https://git-scm.com/downloads). Su Android è possibile farlo utilizzando un emulatore del terminale Linux, come [Termux](https://play.google.com/store/apps/details?id=com.termux&hl=it).  
 
 Successivamente dobbiamo inserire le nostre **credenziali** ed è conveniente utilizzare le stesse sia su Git (locale) che su GitHub (remoto) in modo che ogni interazione, come *push* o *pull*, avvengano senza problemi e ogni *commit* in locale sia correttamente associato al nostro repository remoto predefinito.  
 ```powershell  
 git config --global user.name "IlTuoNomeUtente"
 git config --global user.email "la.tua.email@example.com"
 ```  
+Con l’opzione `--global`, la configurazione viene salvata per **tutti i repository Git** nel sistema. Se invece vuoi specificare un nome o un’email diversa solo per un repository specifico, puoi **omettere `--global`**.  
 
----
-<!-- Nel libro ProGit sono arrivato a pagina 14 -->
-<!-- Vorrei mettere anche la parte di Checking Your Settings. Da traduttore e adattare. -->
+Puoi controllare tutte le configurazioni correnti (globali e locali) con:  
+```powershell  
+git config --list     # Elenco completo
+git config user.name  # Singola voce specifica
+```  
 
-Aprendo l’applicazione, tra le prime cose che dobbiamo fare è spostarci nella cartella in cui desideriamo lavorare e quindi utilizzare il comando `cd` seguito dal percorso della cartella tra le virgolette.  
+Puoi anche personalizzare altri aspetti, come l’**editor di testo predefinito** (usato ad esempio per scrivere messaggi di commit):  
+```powershell  
+git config --global core.editor "nano"
+git config --global core.editor "code --wait"   # Per usare Visual Studio Code
+``` 
 
-### Suggerimenti Opzionali
-- Quando parlerai della configurazione di Git, potresti già anticipare brevemente **cosa sono remoti** (*remote repositories*) come GitHub, per dare una visione d'insieme.
-- Alla fine del capitolo potresti proporre un **esercizio pratico** tipo:
-  - Crea una cartella, inizializza un repository Git, crea e modifica file, prova a portarli attraverso i tre stati.
+Per abilitare la **colorazione automatica dell’output**, utile per distinguere meglio le informazioni nei comandi:  
+```powershell  
+git config --global color.ui auto
+```  
 
-### **`Chiedere aiuto`**
-
-Se dovessi avere bisogno di aiuto durante l’uso di Git, ci sono tre modi per visualizzare la pagina di aiuto (pagina man) di ciascun comando di Git, direttamente dal manuale.
-
-```powershell
-$ git help <comando>
-$ git <comando> --help
-$ man git-<comando>
+Quando lavori con repository remoti su GitHub via HTTPS, potresti voler evitare di inserire le credenziali ad ogni operazione. In tal caso, puoi configurare un *credential helper* per salvare (o memorizzare temporaneamente) le tue credenziali.  
+```powershell  
+git config --global credential.helper cache        # Memorizza temporaneamente
+git config --global credential.helper wincred      # Salva in modo permanente su Windows
+git config --global credential.helper osxkeychain  # Salva in modo permanente su MacOS
 ```
 
-Puoi, per esempio, leggere la pagina man del comando config eseguendo:
+# Elenco comandi utili:
 
-```powershell
-$ git help config
-```
-
-## Tra i comandi più utili abbiamo:
+> **PREMESSA**: Posizionarsi nella cartella dove lavorerai con Git, usando `cd`.
 
 - **<span id="init" style="font-size: 16px;">`$ git init`</span>**: comando iniziale per avviare il monitoraggio di un progetto con Git. Deve essere eseguito nella directory del progetto e crea una nuova subdirectory denominata `.git`, contenente tutti i file necessari per il repository. Con questo solo comando preliminare non viene ancora tracciato alcun file.
   ```powershell
   git init
   ```
+
+- **<span id="clone" style="font-size: 16px;">`$ git clone [url]`</span>**: ottieni una copia di un repository Git esistente, incluso lo storico dei commit, i rami, i tag, e la configurazione interna del progetto.
+	```powershell
+	git clone https://github.com/libgit2/libgit2
+  git clone https://github.com/libgit2/libgit2 mylibgit   # Per rinominare la cartella `libgit2` in maniera differente, con contenuto invariato
+	```
+
+- **<span id="remote" style="font-size: 16px;">`$ git remote`</span>**: 
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
 
 - **<span id="add" style="font-size: 16px;">`$ git add`</span>**: per iniziare a tracciare i file. Può essere utilizzato in diversi modi:
   ```powershell
@@ -154,11 +177,6 @@ $ git help config
 
 				Fix: corretto bug nel calcolo del fattoriale		# Descrizione data al commit.
 		```
-
-- **<span id="clone" style="font-size: 16px;">`$ git clone [url]`</span>**: ottieni una copia di un repository Git esistente, incluso lo storico dei commit, i rami, i tag, e la configurazione interna del progetto.
-	```powershell
-	git clone https://github.com/libgit2/libgit2
-	```
 
 - **<span id="tag" style="font-size: 16px;">`git tag`</span>**: è un'etichetta che viene assegnata a un commit specifico per indicare un <u>commit è importante</u> ed è usato spesso per segnare versioni stabili (esempio: `v1.0`, `v2.1.5`, ecc.).  
   1. Usando semplicemente `git tag` andremo ad <u>elencare</u> tutti i tag, ordinati alfabeticamente. Non indica a quale commit puntano a meno che non si usi `git show`.
@@ -257,11 +275,29 @@ $ git help config
   Senza opzioni aggiuntive, `git restore` opera sulla **working directory**. Con `--staged`, opera sull'**area di staging**; usando entrambe le opzioni contemporaneamente, puoi ripristinare file in entrambi i luoghi con un solo comando.
   Attenzione: `git restore` elimina le modifiche locali **senza chiedere conferma**, quindi è importante usarlo solo quando sei certo di voler scartare i cambiamenti.
 
----
----
----
+- **<span id="help" style="font-size: 16px;">`help`</span>**: per accedere alla documentazione dettagliata di ogni comando ci sono tre metodi principali:  
+  ```powershell  
+  git help <comando>
+  git <comando> --help
+  man git-<comando>
+  ```  
 
+<!-- Nel libro ProGit sono arrivato a pagina 14 --> 
 <!-- TODO -->
+
+# Suggerimento opzionale (sviluppato)
+
+Per dare fin da subito una **visione d’insieme**, potresti introdurre brevemente il concetto di *repository remoto*, spiegando che Git non lavora solo in locale: può sincronizzare i dati con server esterni, come **GitHub**, **GitLab** o **Bitbucket**.  
+Questi remoti permettono di **collaborare** con altri, **eseguire backup** e **condividere codice** pubblicamente o privatamente.  
+Puoi aggiungere, ad esempio:
+
+> > **Nota:** in Git lavorerai spesso sia localmente (sul tuo computer) sia con un *repository remoto*, come su GitHub. È per questo che configurare correttamente le credenziali in locale facilita le operazioni di sincronizzazione, come `git push` e `git pull`.
+
+<!-- 
+Capire come cambiare l'url di git remote add origin perché ho cambiato nome alla repository su git... 
+In generale rivedermi git remote.
+-->
+
 ## Collegarsi ad un server remoto  
 
 [Per collegarsi ad un server remoto](https://youtu.be/qj_q0idpeMQ?t=641&si=9j7vWgyLVRmaP7Nv) (come GitHub) dobbiamo usare il comando `$ git remote`.  
