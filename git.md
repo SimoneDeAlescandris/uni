@@ -2,18 +2,18 @@
 
 - [init](#init)
 - [clone](#clone)
-- [remote](#remote)
 - [add](#add)
 - [status](#status)
+- [diff](#diff)
 - [commit](#commit)
 - [log](#log)
 - [tag](#tag)
 - [show](#show)
-- [.gitignore](#gitignore)
+- [.gitignore](#.gitignore)
+- [remote](#remote)
+- [restore](#restore)
 - [rm](#rm)
 - [mv](#mv)
-- [diff](#diff)
-- [restore](#restore)
 - [help](#help)
 
 - [Per collegarsi ad un server remoto](#collegarsi-ad-un-server-remoto)
@@ -113,46 +113,39 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
 - **<span id="clone" style="font-size: 16px;">`$ git clone [url]`</span>**: ottieni una copia di un repository Git esistente, incluso lo storico dei commit, i rami, i tag, e la configurazione interna del progetto.
 	```powershell
 	git clone https://github.com/libgit2/libgit2
-  git clone https://github.com/libgit2/libgit2 mylibgit   # Per rinominare la cartella `libgit2` in maniera differente, con contenuto invariato
+  git clone https://github.com/libgit2/libgit2 mylibgit   # Rinomina la cartella `libgit2` in `mylibgit`, con contenuto invariato
 	```
 
-- **<span id="remote" style="font-size: 16px;">`$ git remote`</span>**: 
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-
-- **<span id="add" style="font-size: 16px;">`$ git add`</span>**: per iniziare a tracciare i file. Può essere utilizzato in diversi modi:
+- **<span id="add" style="font-size: 16px;">`$ git add`</span>**: è un comando multiuso, lo si usa per: iniziare a tracciare nuovi file; mettere in staging i file e per contrassegnare i file in conflitto di merge come risolti.
   ```powershell
   git add README.py   # Aggiunge un singolo file specificato all'area di stage
   git add .           # Aggiunge tutti i file nella directory corrente e nelle subdirectory
   git add *.txt       # Aggiunge tutti i file con estensione .txt (o qualche essa sia) nella directory corrente
   ```
 
-- **<span id="status" style="font-size: 16px;">`$ git status`</span>**: mostra informazioni dettagliate sullo stato dei file nel repository e determina quali file sono modificati, tracciati o non tracciati.
+- **<span id="status" style="font-size: 16px;">`$ git status`</span>**: mostra informazioni dettagliate sullo stato dei file nel repository e determina quali file sono modificati (_modified_), tracciati (_tracked_) o non tracciati (_untracked_).
   ```powershell
   git status
-  # Per una visualizzazione più sintetica si possono usare:
-  git status -s
-  # oppure
-  git status --short
+  git status -s       # Visualizzazione più sintetica
+  git status --short  # Visualizzazione più sintetica (alternativa)
   ```
   Esempio di output:
 	```powershell
-	M README.py						# M	 : file modificato, ma non ancora aggiunto all'area di stage
+	 M README						# M	 : file modificato, ma non ancora aggiunto all'area di stage
+	M  lib/simplegit.rb		# file modificato ed è già in area di stage.
 	MM Rakefile						# MM : file modificato, messo in stage e poi ulteriormente modificato.
 	A  lib/git.rb					# A	 : file, nuovo, aggiunto all'area di stage
-	M  lib/simplegit.rb		# file modificato ed è già in area di stage.
-	?? LICENSE.txt				# ?? : file non tracciato
+	?? LICENSE.txt				# ?? : file nuovo, non tracciato
 	```
 
+  <img src="./img/8_lifecycle.png" alt="Tutti i possibili stati di un file: Untracked; Unmodified; Modified; Staged." title="Tutti i possibili stati di un file" width="90%" style="display:block; margin-left:auto; margin-right:auto;">
+
+- **<span id="diff" style="font-size: 16px;">`$ git diff`</span>**: se `$ git status` fosse un po’ troppo vago per i tuoi standard e tu volessi sapere esattamente cosa è cambiato, questo comando mostra le differenze, riga per riga, tra i file modificati e l’ultima versione tracciata (HEAD o staging area). Serve per vedere *cosa* cambierà prima di committare.  
+  ```powershell  
+  git diff            # mostra le modifiche non ancora aggiunte
+  git diff --staged   # mostra le modifiche che hai già aggiunto con `git add` e che finiranno nel prossimo commit
+  ```  
+  
 - **<span id="commit" style="font-size: 16px;">`git commit`</span>**: salva uno snapshot permanente dei file che si trovano *nell'area di stage* nel repository locale. Non registra automaticamente *tutti* i cambiamenti, ma solo quelli che sono stati aggiunti all'area di stage attraverso `git add`. Eventuali modifiche apportate dopo tale comando non saranno incluse nel commit finché non verranno registrate con `git add`.
   ```powershell
 	git commit -m "Titolo: Ciao" -m "Descrizione: Messaggio descrittivo"
@@ -211,7 +204,7 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   git show v1.4
   ```
 
-- **<span id="gitignore" style="font-size: 16px;">`.gitignore`</span>**: file di testo usato per dire a Git quali file o cartelle non tracciare. Si crea nella root del repository.  
+- **<span id=".gitignore" style="font-size: 16px;">`.gitignore`</span>**: file di testo usato per dire a Git quali file o cartelle non tracciare. Si crea nella root del repository.  
   ```powershell  
   echo "*.log" >> .gitignore
   echo "build/" >> .gitignore
@@ -219,14 +212,58 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   git add .gitignore
   git commit -m "Aggiunto file .gitignore"
   ```
-	Ogni riga rappresenta un pattern, ad esempio `*.log` ignora tutti i file `.log`, `build/` ignora tutta la cartella `build`. La terza riga dice a Git di ignorare tutti i file che terminano con una tilde (~), utilizzata da molti editor di testo, come Emacs, per contrassegnare i file temporanei.  
-	Le regole per i modelli che puoi inserire nel file `.gitignore` sono le seguenti:  
+	Ogni riga rappresenta un pattern, ad esempio `*.log` ignora tutti i file `.log`, `build/` ignora tutta la cartella `build`. La terza riga dice a Git di ignorare tutti i file che terminano con una tilde (`~`), utilizzata da molti editor di testo, come Emacs, per contrassegnare i file temporanei.  
+	Le regole per i patterns che puoi inserire nel file `.gitignore` sono le seguenti:  
   - Le righe vuote o le righe che iniziano con `#` vengono ignorate;
-  - È possibile terminare i modelli con una barra ( `/`) per specificare una directory;  
-  - Puoi negare uno schema iniziandolo con un punto esclamativo ( `!`);  
-  - I modelli glob standard funzionano.  
-  	Essi sono come espressioni regolari semplificate utilizzate dalle shell. Un asterisco ( `*`) corrisponde a zero o più caratteri; `[abc]`corrisponde a qualsiasi carattere all'interno delle parentesi (in questo caso a, b o c); un punto interrogativo ( `?`) corrisponde a un singolo carattere; e le parentesi che racchiudono caratteri separati da un trattino( `[0-9]`) corrispondono a qualsiasi carattere tra di loro (in questo caso da 0 a 9). Puoi anche utilizzare due asterischi per abbinare le directory nidificate; `a/**/z`corrisponderebbe a `a/z`, `a/b/z`, `a/b/c/z`, e così via.
-   
+  - È possibile specificare una directory con una barra obliqua ( `/`);  
+  - Puoi negare una riga iniziandola con un punto esclamativo ( `!`);  
+  - I _modelli glob standard_ funzionano.  
+  	Essi sono come espressioni regolari semplificate utilizzate dalle shell. Un asterisco ( `*`) corrisponde a zero o più caratteri; `[abc]`corrisponde a qualsiasi carattere all'interno delle parentesi (in questo caso a, b o c); un punto interrogativo ( `?`) corrisponde a un singolo carattere; e le parentesi che racchiudono caratteri separati da un trattino( `[0-9]`) corrispondono a qualsiasi carattere tra di loro (in questo caso da 0 a 9). Puoi anche utilizzare due asterischi per abbinare le directory nidificate; `a/**/z`corrisponderebbe a `a/z`, `a/b/z`, `a/b/c/z`, e così via.  
+  Esempio pratico di un file `.gitignore`:
+  ```powershell
+  # no .a files
+  *.a
+
+  # but do track lib.a, even though you're ignoring .a file above
+  !lib.a
+
+  # only ignore the root TODO file, not subdir/TODO
+  /TODO
+
+  # ignore all files in the build/ directory
+  build/
+
+  # ignore doc/notes.txt, but not doc/server/arch.txt
+  doc/*.txt
+
+  # ignore all .txt files in the doc/ directory
+  doc/**/*.txt
+  ```
+  GitHub mantiene un elenco abbastanza completo di buoni esempi di file `.gitignore` per dozzine di progetti e linguaggi su https://github.com/github/gitignore se vuoi un punto di partenza per il tuo progetto.
+  
+- **<span id="remote" style="font-size: 16px;">`$ git remote`</span>**: 
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+
+- **<span id="restore" style="font-size: 16px;">`$ git restore`</span>**: **ripristina** file nella working directory (*directory di lavoro*) o nell’area di staging, scartando modifiche indesiderate senza alterare la cronologia del repository (quindi senza creare commit).
+
+  - `git restore <file>`: **annulla le modifiche locali** al file, ripristinandolo dalla versione nell’ultimo commit (HEAD)o dall'area di staging.  
+  - `git restore --staged <file>`: rimuove il file dall'**area di staging**, riportandolo nello stato di "modificato ma non in stage". È utile se hai aggiunto un file con `git add` ma ti sei accorto di aver sbagliato.
+  - `git restore --source <commit> <file>`: ripristina il file a una versione specifica indicata da un commit passato, senza influenzare altri file.
+  - `git restore --worktree <file>`: ripristina il file solo nella working directory, mantenendo invariata la versione in stage.
+
+  Senza opzioni aggiuntive, `git restore` opera sulla **working directory**. Con `--staged`, opera sull'**area di staging**; usando entrambe le opzioni contemporaneamente, puoi ripristinare file in entrambi i luoghi con un solo comando.
+  Attenzione: `git restore` elimina le modifiche locali **senza chiedere conferma**, quindi è importante usarlo solo quando sei certo di voler scartare i cambiamenti.
+
 - **<span id="rm" style="font-size: 16px;">`$ git rm`</span>**: rimuove file sia dalla working directory che dall’indice (staging area). Se vuoi solo smettere di tracciarlo ma lasciarlo sul disco, devi usare l’opzione `--cached`.  
   ```powershell
   git rm file.txt
@@ -253,28 +290,6 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
 	git commit -m "Rinominato file"
   ```
   
-- **<span id="diff" style="font-size: 16px;">`$ git diff`</span>**: mostra le differenze, riga per riga, tra i file modificati e l’ultima versione tracciata (HEAD o staging area). Serve per vedere *cosa* cambierà prima di committare.  
-  ```powershell
-  git diff
-  ```
-  mostra le modifiche non ancora aggiunte, mentre
-  ```powershell
-  git diff --staged
-  ```
-  mostra le modifiche che hai già aggiunto con `git add` e che finiranno nel prossimo commit.  
-
-	Insomma, serve se il comando `$ git status` fosse un po’ troppo vago per i tuoi standard e tu volessi sapere esattamente cosa è cambiato.  
-	
-- **<span id="restore" style="font-size: 16px;">`$ git restore`</span>**: **ripristina** file nella working directory (*directory di lavoro*) o nell’area di staging, scartando modifiche indesiderate senza alterare la cronologia del repository (quindi senza creare commit).
-
-  - `git restore <file>`: **annulla le modifiche locali** al file, ripristinandolo dalla versione nell’ultimo commit (HEAD)o dall'area di staging.  
-  - `git restore --staged <file>`: rimuove il file dall'**area di staging**, riportandolo nello stato di "modificato ma non in stage". È utile se hai aggiunto un file con `git add` ma ti sei accorto di aver sbagliato.
-  - `git restore --source <commit> <file>`: ripristina il file a una versione specifica indicata da un commit passato, senza influenzare altri file.
-  - `git restore --worktree <file>`: ripristina il file solo nella working directory, mantenendo invariata la versione in stage.
-
-  Senza opzioni aggiuntive, `git restore` opera sulla **working directory**. Con `--staged`, opera sull'**area di staging**; usando entrambe le opzioni contemporaneamente, puoi ripristinare file in entrambi i luoghi con un solo comando.
-  Attenzione: `git restore` elimina le modifiche locali **senza chiedere conferma**, quindi è importante usarlo solo quando sei certo di voler scartare i cambiamenti.
-
 - **<span id="help" style="font-size: 16px;">`help`</span>**: per accedere alla documentazione dettagliata di ogni comando ci sono tre metodi principali:  
   ```powershell  
   git help <comando>
@@ -282,7 +297,7 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   man git-<comando>
   ```  
 
-<!-- Nel libro ProGit sono arrivato a pagina 14 --> 
+<!-- Nel libro ProGit sono arrivato a pagina 29 --> 
 <!-- TODO -->
 
 # Suggerimento opzionale (sviluppato)
