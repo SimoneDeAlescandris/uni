@@ -336,6 +336,7 @@ Nei remoti si possono eseguire comandi come:
 ...
 
 ---
+---
 
 `git push`, `git pull`, `git fetch`, indirizzando automaticamente l’origine o la destinazione dei dati verso/da un determinato server remoto.
 
