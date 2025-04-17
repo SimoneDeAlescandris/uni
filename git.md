@@ -1,22 +1,27 @@
 # Indice
 
-- [init](#init)
-- [clone](#clone)
-- [add](#add)
-- [status](#status)
-- [diff](#diff)
-- [commit](#commit)
-- [log](#log)
-- [tag](#tag)
-- [show](#show)
-- [.gitignore](#.gitignore)
-- [remote](#remote)
-- [restore](#restore)
-- [rm](#rm)
-- [mv](#mv)
-- [help](#help)
-
-- [Per collegarsi ad un server remoto](#collegarsi-ad-un-server-remoto)
+- [Introduzione](#introduzione)
+  - [I Tre Stati](#i-tre-stati)
+  - [Distinzione tra Git e GitHub](#distinzione-tra-git-e-github)
+  - [Configurazione Iniziale di Git](#configurazione-iniziale-di-git)
+- [Elenco comandi utili](#elenco-comandi-utili)
+  - [init](#init)
+  - [clone](#clone)
+  - [add](#add)
+  - [status](#status)
+  - [diff](#diff)
+  - [commit](#commit)
+  - [log](#log)
+  - [tag](#tag)
+  - [show](#show)
+  - [.gitignore](#.gitignore)
+  - [checkout](#checkout)
+  - [restore](#restore)
+  - [rm](#rm)
+  - [mv](#mv)
+  - [help](#help)
+- [Connect to a `remote` server](#connect-to-a-remote-server)
+- [Riassunto](#riassunto)
 - [Bibliografia](#bibliografia)
 
 <!-- Completare Indice -->
@@ -58,11 +63,9 @@ Se una particolare versione di un file è presente nella directory Git, è consi
 
 Prima di proseguire con la configurazione pratica di Git, è utile chiarire la differenza tra **Git** e **GitHub**.  
 **Git** è uno strumento locale per il controllo di versione, che ti permette di gestire lo sviluppo di un progetto in modo distribuito.  
-**GitHub** è una piattaforma web che offre servizi di hosting per repository Git, oltre a funzionalità aggiuntive come la collaborazione tra sviluppatori, la gestione delle modifiche tramite pull request e l’integrazione continua (CI/CD).
+**GitHub** è una piattaforma web che offre servizi di hosting per repository Git, oltre a funzionalità aggiuntive come la collaborazione tra sviluppatori, la gestione delle modifiche tramite pull request e l’integrazione continua (CI/CD).  
 
-Git è indipendente da GitHub: puoi usare Git in locale senza mai utilizzare GitHub, ma non puoi utilizzare GitHub senza Git.
-
-<!-- Parlare qui dei repository remoti? -->
+Git è indipendente da GitHub: puoi usare Git in locale senza mai utilizzare GitHub, ma non puoi utilizzare GitHub senza Git.  
 
 ## Configurazione Iniziale di Git
 
@@ -101,7 +104,7 @@ git config --global credential.helper wincred      # Salva in modo permanente su
 git config --global credential.helper osxkeychain  # Salva in modo permanente su MacOS
 ```
 
-# Elenco comandi utili:
+# Elenco comandi utili
 
 > **PREMESSA**: Posizionarsi nella cartella dove lavorerai con Git, usando `cd`.
 
@@ -150,26 +153,32 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   ```powershell
 	git commit -m "Titolo: Ciao" -m "Descrizione: Messaggio descrittivo"
 	git commit -a -m "Messaggio" 	# Aggiunge automaticamente tutti i file tracciati modificati e poi committa (equivalente a `git add` + `git commit`)
-    - git commit --amend 			# Modifica l'ultimo commit, utile per correggere il messaggio o aggiungere altri file dimenticati.
+  ```
+  ```powershell
+  git commit -m "Initial commit"
+  git add forgotten_file.txt
+  git commit --amend 			# Modifica l'ultimo commit, utile per correggere il messaggio o aggiungere altri file dimenticati.
 	``` 
 	L'opzione `-m`, non necessaria, permette di scrivere direttamente un messaggio di fianco ad ogni commit per avere un nostro report sulle informazioni che avevamo quando lo avevamo creato.
 
-- **<span id="log" style="font-size: 16px;">`git log`</span>**: mostra la cronologia di tutti i commit effettuati, in ordine dal più recente al più vecchio, in modo da poter visionare quali modifiche sono state fatte, da chi, e con quale messaggio (oppure per recuperare l'ID di un commit). Essendo solo un comando di lettura, non modifica nulla ed è quindi sicuro eseguirlo tutte le volte che vogliamo.
-	```powershell
+- **<span id="log" style="font-size: 16px;">`git log`</span>**: mostra la cronologia di tutti i commit effettuati, in ordine dal più recente al più vecchio, con dettagli su autore, data, messaggio ed ID del commit. È un comando di solo lettura. Avendo MOLTE opzioni meglio vedere le altre sulla pagina man.  
+	```powershell  
   git log
 	git log -n										# Mostra gli ultimi n commit.
 	git log --oneline  								# Mostra ogni commit su una singola riga, molto più compatto.
   git log --graph --oneline 						# Aggiunge anche un piccolo grafico ad albero, utile per visualizzare i rami.
-  git log -p 										# Mostra anche le modifiche effettive (diff) apportate da ogni commit.
-  ```
-  L'output è simile a:
-		```powershell
+  git log -p 										# Mostra le modifiche effettive (diff) apportate da ogni commit.
+  git log --stat                                  # Fornisce una serie di informazioni: un elenco dei file modificati; quante linee in quei file sono state aggiunge e rimosse; un riassunto delle informazioni.
+  git log --shortstat                                  # Come prima, ma con solo il riassunto delle informazioni.
+  ```  
+  L'output è simile a:  
+		```powershell  
 		commit 3f9c1bfae3f2d7b123456789abcdef123456789			# È l'hash identificativo del commit, unico per ogni cambiamento.
 		Author: Simone <simone@example.com>									# Chi ha fatto il commit.
 		Date:   Sat Apr 6 10:00 2025 +0200									# Quando è stato fatto.
 
 				Fix: corretto bug nel calcolo del fattoriale		# Descrizione data al commit.
-		```
+		```  
 
 - **<span id="tag" style="font-size: 16px;">`git tag`</span>**: è un'etichetta che viene assegnata a un commit specifico per indicare un <u>commit è importante</u> ed è usato spesso per segnare versioni stabili (esempio: `v1.0`, `v2.1.5`, ecc.).  
   1. Usando semplicemente `git tag` andremo ad <u>elencare</u> tutti i tag, ordinati alfabeticamente. Non indica a quale commit puntano a meno che non si usi `git show`.
@@ -240,21 +249,17 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   doc/**/*.txt
   ```
   GitHub mantiene un elenco abbastanza completo di buoni esempi di file `.gitignore` per dozzine di progetti e linguaggi su https://github.com/github/gitignore se vuoi un punto di partenza per il tuo progetto.
-  
-- **<span id="remote" style="font-size: 16px;">`$ git remote`</span>**: 
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
 
-- **<span id="restore" style="font-size: 16px;">`$ git restore`</span>**: **ripristina** file nella working directory (*directory di lavoro*) o nell’area di staging, scartando modifiche indesiderate senza alterare la cronologia del repository (quindi senza creare commit).
+- **<span id="checkout" style="font-size: 16px;">`$ git checkout -- [file]`</span>**: **sostituisce** `[file]` con la sua versione del commit precedente. Serve ad annullare le modifiche fatte rispetto all'ultimo commit. **Attenzione**: sostituisce, non modifica. Usalo solo se ne sei davvero convinto perché poi non si può più tornare indietro.
+  ```powershell
+  git status
+  git checkout -- CONTRIBUTING.md
+  git status
+  ```
+  Se hai bisogno di entrambe le versioni del file, puoi aprire una nuova ramificazione (**Branch**).
+  <!-- RICORDARMI DI METTERE ANCHE QUI IL LINK DI QUANDO PARLERÒ del BRANCH. -->
+
+- **<span id="restore" style="font-size: 14px;">`$ git restore`</span>**: **ripristina** file nella working directory (*directory di lavoro*) o nell’area di staging, scartando modifiche indesiderate senza alterare la cronologia del repository (quindi senza creare commit).
 
   - `git restore <file>`: **annulla le modifiche locali** al file, ripristinandolo dalla versione nell’ultimo commit (HEAD)o dall'area di staging.  
   - `git restore --staged <file>`: rimuove il file dall'**area di staging**, riportandolo nello stato di "modificato ma non in stage". È utile se hai aggiunto un file con `git add` ma ti sei accorto di aver sbagliato.
@@ -297,25 +302,195 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   man git-<comando>
   ```  
 
-<!-- Nel libro ProGit sono arrivato a pagina 29 --> 
-<!-- TODO -->
+# Connect to a `remote` server  
 
-# Suggerimento opzionale (sviluppato)
+Come [accennato prima](#distinzione-tra-git-e-github), per collaborare a qualsiasi progetto necessitiamo di piattaforme di hosting dei repository, come GitHub. I **repository remoti** sono quindi versioni del progetto ospitate da queste piattafome.  
 
-Per dare fin da subito una **visione d’insieme**, potresti introdurre brevemente il concetto di *repository remoto*, spiegando che Git non lavora solo in locale: può sincronizzare i dati con server esterni, come **GitHub**, **GitLab** o **Bitbucket**.  
-Questi remoti permettono di **collaborare** con altri, **eseguire backup** e **condividere codice** pubblicamente o privatamente.  
-Puoi aggiungere, ad esempio:
+Per vedere quali server remoti hai configurato, puoi eseguire il comando **`git remote`**, che elenca i nomi abbreviati (_shortname_) di ogni _handle_ (riferimento) remoto specificato. Se hai clonato il tuo repository, dovresti almeno vedere `origin`, ovvero il nome predefinito che Git assegna al server da cui hai clonato.   
 
-> > **Nota:** in Git lavorerai spesso sia localmente (sul tuo computer) sia con un *repository remoto*, come su GitHub. È per questo che configurare correttamente le credenziali in locale facilita le operazioni di sincronizzazione, come `git push` e `git pull`.
+Nei remoti si possono eseguire comandi come `git push`, `git pull`, `git fetch`, indirizzando automaticamente l’origine o la destinazione dei dati verso/da un determinato server remoto.
+
+Quando si clona una repository con [`git clone`](#clone), Git crea automaticamente un collegamento remoto chiamato `origin`, che punta all’URL da cui è stato clonato il progetto. Questo collegamento può essere visualizzato con `git remote -v`, che mostra per ogni shortname l’URL usato sia per il fetch che per il push. Ad esempio:
+```powershell
+origin  https://github.com/simone/vecchio-nome-repo.git (fetch)
+origin  https://github.com/simone/vecchio-nome-repo.git (push)
+```
+
+Se successivamente su GitHub rinomini la repository, Git locale **non sa nulla di questo cambiamento**, quindi continuerà a usare l’URL originario finché non lo aggiornerai manualmente:
+```powershell
+git remote set-url origin https://github.com/simone/nuovo-nome-repo.git
+```
+Questo comando sovrascrive l’URL associato al remote `origin`, facendo in modo che i comandi `push` e `pull` funzionino correttamente anche dopo la rinomina della repository.
+
+Se invece vuoi cambiare il nome dello shortname, per esempio da `origin` a `uni`, puoi usare il comando:
+```bash
+git remote rename origin uni
+```
+Dopo questo, `git remote -v` mostrerà:
+```
+uni  https://github.com/simone/nuovo-nome-repo.git (fetch)
+uni  https://github.com/simone/nuovo-nome-repo.git (push)
+```
+
+Da questo momento in poi, i comandi `git push` e `git pull` andranno specificati con il nuovo nome, ad esempio `git push uni main`.
+
+Puoi anche aggiungere più remoti contemporaneamente. Per esempio:
+```bash
+git remote add backup https://gitlab.com/simone/copia.git
+```
+
+A questo punto avrai due remoti (`uni` e `backup`) e potrai scegliere a quale pushare o da quale tirare i dati. Git non impedisce di avere più remoti; al contrario, è una pratica comune in ambienti distribuiti o quando si vuole avere una copia di backup da qualche altra parte.
+
+---
+
+Perfettamente chiaro, Simone. Ti elenco le **opzioni più utili** per ciascun comando che hai citato, in maniera sintetica e funzionale allo studio. Poi rispondo alla tua domanda sul confronto tra `git clone` e `git remote add`.
+
+---
+
+### `git remote`
+Gestisce i collegamenti ai repository remoti.
+
+- `git remote -v` → elenca gli URL associati ai remoti (fetch e push)
+- `git remote add <nome> <url>` → aggiunge un nuovo remoto
+- `git remote rename <vecchio> <nuovo>` → rinomina un remoto
+- `git remote remove <nome>` → rimuove il collegamento a un remoto
+
+---
+
+### `git push`
+Invia i commit dal repository locale a quello remoto.
+
+- `git push` → invia le modifiche al branch remoto tracciato
+- `git push origin <nome-branch>` → invia uno specifico branch a uno specifico remoto
+- `git push -u origin <nome-branch>` → imposta il branch remoto come tracciato (upstream)
+- `git push --tags` → invia tutti i tag locali al repository remoto
+- `git push origin :nome-branch` → elimina un branch remoto
+
+---
+
+### `git pull`
+Scarica e unisce in un colpo solo le modifiche dal remoto nel branch corrente.
+
+- `git pull` → equivalente a `git fetch` seguito da `git merge`
+- `git pull --rebase` → esegue `git fetch` seguito da `git rebase` anziché `merge`
+- `git pull origin <nome-branch>` → preleva e unisce un branch remoto specifico
+
+---
+
+### `git fetch`
+Scarica gli oggetti dal remoto ma **non** li unisce nel branch attuale.
+
+- `git fetch` → scarica tutti i branch remoti e gli aggiornamenti
+- `git fetch origin` → scarica solo dal remoto `origin`
+- `git fetch origin nome-branch` → scarica un branch specifico
+- `git fetch --all` → scarica da tutti i remoti configurati
+
+---
+
+### `git merge`
+Unisce un branch (o commit) nel branch corrente.
+
+- `git merge <branch>` → unisce il branch indicato nel branch attuale
+- `git merge --no-ff` → forza la creazione di un commit di merge anche se è possibile un fast-forward
+- `git merge --abort` → annulla un merge in corso in caso di conflitti
+- `git merge --squash <branch>` → combina tutte le modifiche in un unico commit (non automatico)
+
+---
+
+### `git clone`
+Crea una copia completa di un repository remoto, compreso il database Git e la configurazione del remoto.
+
+- `git clone <url>` → clona il repository nella directory corrente
+- `git clone <url> nome-cartella` → clona il repository in una cartella specifica
+- `git clone --depth 1 <url>` → clona solo l’ultimo commit (clone “superficiale”, utile per risparmiare spazio)
+- `git clone --branch <nome>` → clona un branch specifico
+
+---
+
+### ❓ *`git remote add origin [URL]` e `git clone [URL]` sono la stessa cosa?*
+
+**No, non sono la stessa cosa.**
+
+- `git clone [URL]` fa **più cose insieme**:
+  - inizializza un repository locale (`git init`)
+  - configura il remoto come `origin`
+  - scarica tutti i file, la cronologia, i branch, ecc.
+  - effettua automaticamente il primo checkout nel branch principale
+
+- `git remote add origin [URL]` invece:
+  - **aggiunge solo un riferimento al remoto** nel tuo repository locale esistente
+  - non scarica nulla, non inizializza nulla, non fa alcun fetch o checkout
+
+Quindi se parti da **zero**, devi usare `git clone`.  
+`git remote add origin` lo usi **dopo** un `git init`, ad esempio se stai iniziando un progetto nuovo da locale e poi vuoi connetterlo a GitHub.
+
+Esempio pratico:
+
+```bash
+mkdir nuovo-progetto
+cd nuovo-progetto
+git init
+git remote add origin https://github.com/simone/nuovo-progetto.git
+```
+
+Questa sequenza non scarica niente, ma ti permette poi di fare il primo push.
+
+---
+
+Vuoi che ti prepari una tabella riassuntiva con tutti questi comandi e opzioni per il tuo documento? Potrebbe esserti utile come riferimento rapido.
+
+---
+
+<!-- Nel libro ProGit sono arrivato a pagina 42 -->  
+
+---
+
+Per associare il tuo repository locale a un repository remoto, si usa:
+
+```bash
+git remote add origin https://github.com/utente/nome-repo.git
+```
+
+In questo caso `origin` è un nome convenzionale usato per indicare l’URL remoto predefinito. Puoi avere più remoti, ciascuno con un nome diverso (es. `origin`, `upstream`, ecc.).
+
+Una volta configurato il collegamento, puoi:
+- **inviare le modifiche locali** al server remoto con:
+  ```bash
+  git push origin master
+  ```
+
+- **recuperare modifiche da altri sviluppatori** con:
+  ```bash
+  git pull origin master
+  ```
+
+Oppure semplicemente usare:
+```bash
+git clone https://github.com/utente/nome-repo.git
+```
+che scarica tutto il repository remoto (con la cronologia completa) e imposta già `origin` come remoto predefinito.
+
+Perché è utile sapere tutto questo già durante la configurazione iniziale?  
+Perché **le credenziali che imposti in locale** (tramite `git config`) verranno usate per firmare i tuoi commit, e per **autenticarti** quando interagirai con i remoti. Se non sono corrette o coerenti con quelle usate su GitHub, potresti incontrare errori durante il `push`.
+
+Ad esempio:
+```bash
+git config --global user.name "Simone"
+git config --global user.email "simone@example.com"
+```
+
+Se il tuo account GitHub è registrato con un’altra email, GitHub potrebbe non associare correttamente i tuoi commit al tuo profilo. Per evitare problemi, è buona norma usare le **stesse credenziali in locale e sul remoto**.
+
+> ✅ Suggerimento: dopo aver fatto `git push`, visita il tuo repository su GitHub e controlla che il commit risulti attribuito al tuo utente. In caso contrario, verifica che l’email configurata sia corretta.
+
+---
 
 <!-- 
 Capire come cambiare l'url di git remote add origin perché ho cambiato nome alla repository su git... 
 In generale rivedermi git remote.
 -->
 
-## Collegarsi ad un server remoto  
-
-[Per collegarsi ad un server remoto](https://youtu.be/qj_q0idpeMQ?t=641&si=9j7vWgyLVRmaP7Nv) (come GitHub) dobbiamo usare il comando `$ git remote`.  
+[Collegarsi ad un server remoto](https://youtu.be/qj_q0idpeMQ?t=641&si=9j7vWgyLVRmaP7Nv) (come GitHub) dobbiamo usare il comando `$ git remote`.  
 
 ```powershell
 % git remote add origin https://github.com/GiuIiopaesani/sitoweb
@@ -334,6 +509,26 @@ L’opzione `-u` ci permetterebbe di salvare quello che stiamo per inserire come
 >
 
 https://www.instagram.com/p/C_K4qfnI2Ga/?igsh=MW0ya3kyZnMwbGJsdA==
+
+# Riassunto
+
+<!-- 
+Elencare qui quindi le azioni da fare per instanziare un progetto in Git. 
+-->
+
+1. Inizializziamo un progetto non esistente muovendoci nella _working directory_ con `cd` o aprendo vscode in quella cartella e usiamo:
+   ```powershell
+   git init
+   ```
+  1. (OPZIONALE)
+     Se vogliamo partire da un progetto esistente:
+     ```powershell
+     git clone [URL]
+     ```
+     ```powershell
+     git remote add [handle] [URL]
+     ```
+etc.
 
 # Bibliografia
 
